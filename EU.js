@@ -9,6 +9,7 @@ fetch("EU_death_rate.csv")
     let width = 300;
     let height = 300;
     let radius = Math.min(width, height) / 2;
+    let arcPadding = 0.01; // Adjust the arc padding here (in radians)
 
     // Function to create arcs with rounded edges
     let createArc = function(startAngle, endAngle) {
@@ -16,14 +17,14 @@ fetch("EU_death_rate.csv")
             .innerRadius(radius * 0.6) // Adjust inner radius for donut chart effect
             .outerRadius(radius)
             .cornerRadius(5) // Adjust corner radius for rounded edges
-            .startAngle(startAngle)
-            .endAngle(endAngle);
+            .startAngle(startAngle + arcPadding)
+            .endAngle(endAngle - arcPadding);
     };
 
     const pie = d3.pie()
       .sort(null)
       .value(d => d);
-
+    
     const svg = d3.select("#donut_chart")
       .append("svg")
       .attr("width", width)
