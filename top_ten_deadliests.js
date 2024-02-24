@@ -22,9 +22,7 @@ fetch("top_ten_deadliest_cancers.csv")
       orientation: 'h',
       marker: {color: customColors,
         width: 0.6,
-        line: {
-          shape: 'spline'  // Set the shape of the bar to spline for rounded bars
-        }
+        //hovermode: 'closest',
       }
     }];
 
@@ -38,7 +36,7 @@ fetch("top_ten_deadliest_cancers.csv")
       },
       height: 400,
       width: 0.6,
-      barcornerradius: 15,
+      hovermode: 'closest',
     };
 
     Plotly.newPlot('horizontal_bar_chart', plotlyData, layout);
