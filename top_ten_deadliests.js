@@ -12,9 +12,9 @@ fetch("top_ten_deadliest_cancers.csv")
     const x = parsedData.map(row => row['Survival Rate%']);
     const y = parsedData.map(row => row['Deadliest Cancers']);
     const customColors = [
-      "#fd7f6f", "#7eb0d5", "#9aba95", "#bd7ebe", "#ffb55a", "#f5e960", "#beb9db", "#fdcce5", "#8bd3c7","#d7658b"
+      "#012d36", "#06b6a7", "#ffc215", "#fb9600", "#fe552e", "#6eb8db","#8fe6eb","#c1b7e9","#e993bc","#ff696d"
     ];
-
+//"#6dd3e9", "#f61b67", "#1cb8b4", "#8bd3c7","#d7658b"
     const plotlyData = [{
       x: x,
       y: y,
@@ -22,7 +22,6 @@ fetch("top_ten_deadliest_cancers.csv")
       orientation: 'h',
       marker: {color: customColors,
         width: 0.6,
-        //hovermode: 'closest',
       }
     }];
 
