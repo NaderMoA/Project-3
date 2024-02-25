@@ -6,13 +6,13 @@ fetch("EU_death_rate.csv")
     const values = filteredData.map(row => parseFloat(row['1.9M DEATHS']));
     const labels = filteredData.map(row => row['Category']);
     const customColors = ['#FFB6C1', '#FFDAB9', '#FFA07A', '#FFD700', '#98FB98', '#ADD8E6', '#FF69B4', '#F0E68C', '#87CEEB', '#FFC0CB'];
-    const width = 600;
-    const height = 400;
-    const radius = Math.min(width, height) / 2;
+    const width = 700; // Increased width to accommodate the legend
+    const height = 500;
+    const radius = Math.min(width, height) / 3;
     const arcPadding = 0.01;
     // Calculate total value
     const totalDeaths = (values.reduce((a, b) => a + b, 0) * 10 ** -6).toFixed(1);
-    //add padding
+    // Add padding
     let arc = d3.arc()
       .innerRadius(radius * 0.6)
       .outerRadius(radius)
@@ -38,13 +38,20 @@ fetch("EU_death_rate.csv")
     g.append("path")
       .attr("d", arc)
       .style("fill", (_, i) => customColors[i])
-      .on("mouseover", function () {
+      .on("mouseover", function (event, d) {
         // Apply shadow effect on mouseover
         d3.select(this).style("filter", "url(#drop-shadow)");
+        // Make legend item bold on mouseover
+        legend.filter((_, i) => i === d.index)
+          .select("text")
+          .style("font-weight", "bold");
       })
       .on("mouseout", function () {
         // Remove shadow effect on mouseout
         d3.select(this).style("filter", "none");
+        // Reset legend item style on mouseout
+        legend.selectAll("text")
+          .style("font-weight", "normal");
       });
 
     svg.append("text")
@@ -72,10 +79,17 @@ fetch("EU_death_rate.csv")
       labelGroup.style("opacity", (_, i) => i === d.index ? 1 : 0);
       // Make other arcs pale
       g.style("opacity", (_, i) => i === d.index ? 1 : 0.5);
+      // Make legend item bold on mouseover
+      legend.filter((_, i) => i === d.index)
+        .select("text")
+        .style("font-weight", "bold");
     }).on("mouseout", function () {
       // Hide labels and revert opacity on mouseout
       labelGroup.style("opacity", 0);
       g.style("opacity", 1);
+      // Reset legend item style on mouseout
+      legend.selectAll("text")
+        .style("font-weight", "normal");
     });
 
     // Define the filter for the shadow effect
@@ -98,13 +112,14 @@ fetch("EU_death_rate.csv")
     const feMerge = filter.append("feMerge");
     feMerge.append("feMergeNode").attr("in", "offsetBlur");
     feMerge.append("feMergeNode").attr("in", "SourceGraphic");
+
     // Add legend
     const legend = svg.selectAll(".legend")
       .data(labels)
       .enter()
       .append("g")
       .attr("class", "legend")
-      .attr("transform", (d, i) => `translate(-20,${i * 20})`); // Adjust vertical spacing between legend items
+      .attr("transform", (d, i) => `translate(200,${i * 20})`); // Adjust vertical spacing between legend items
 
     legend.append("rect")
       .attr("width", 10)
@@ -115,6 +130,26 @@ fetch("EU_death_rate.csv")
       .text(d => d)
       .style("font-size", 12)
       .attr("y", 10)
-      .attr("x", 11);
+      .attr("x", 11)
+      .on("mouseover", function (event, d, i) {
+        // Apply shadow effect on mouseover
+        g.filter((_, index) => index === i)
+          .select("path")
+          .style("filter", "url(#drop-shadow)");
+        // Make corresponding arc bold on mouseover
+        g.filter((_, index) => index === i)
+          .select("text")
+          .style("font-weight", "bold");
+      })
+      .on("mouseout", function (event, d, i) {
+        // Remove shadow effect on mouseout
+        g.filter((_, index) => index === i)
+          .select("path")
+          .style("filter", "none");
+        // Reset corresponding arc style on mouseout
+        g.filter((_, index) => index === i)
+          .select("text")
+          .style("font-weight", "normal");
+      });
   })
   .catch(error => console.error('Error fetching CSV:', error));
