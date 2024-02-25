@@ -2,30 +2,26 @@ fetch("EU_death_rate.csv")
   .then(response => response.text())
   .then(csvData => {
     const parsedData = Papa.parse(csvData, { header: true, dynamicTyping: true }).data;
-    const values = parsedData.map(row => parseFloat(row['1.9M DEATHS'])).filter(value => !isNaN(value));
-    const labels = parsedData.map(row => row['Category']).filter(label => label !== undefined);
-    const customColors = ['#ff9999', '#66b3ff', '#99ff99', '#ffcc99', '#c2c2f0', '#ffb3e6', '#c2f0c2', '#ff6666', '#c2d6d6', '#c2c2a3'];
+    const filteredData = parsedData.filter(row => row['1.9M DEATHS'] !== undefined && row['1.9M DEATHS'] !== null);
+    const values = filteredData.map(row => parseFloat(row['1.9M DEATHS']));
+    const labels = filteredData.map(row => row['Category']);
+    const customColors = ['#FFB6C1', '#FFDAB9', '#FFA07A', '#FFD700', '#98FB98', '#ADD8E6', '#FF69B4', '#F0E68C', '#87CEEB', '#FFC0CB'];
+    const width = 600;
+    const height = 400;
+    const radius = Math.min(width, height) / 2;
+    const arcPadding = 0.01;
 
-    let width = 300;
-    let height = 300;
-    let radius = Math.min(width, height) / 2;
-    let arcPadding = 0.01; // Adjust the arc padding here (in radians)
-
-    // Function to create arcs with rounded edges
-    let createArc = function(startAngle, endAngle) {
-        return d3.arc()
-            .innerRadius(radius * 0.6) // Adjust inner radius for donut chart effect
-            .outerRadius(radius)
-            .cornerRadius(5) // Adjust corner radius for rounded edges
-            .startAngle(startAngle + arcPadding)
-            .endAngle(endAngle - arcPadding);
-    };
+    let arc = d3.arc()
+      .innerRadius(radius * 0.6)
+      .outerRadius(radius)
+      .cornerRadius(5)
+      .padAngle(arcPadding);
 
     const pie = d3.pie()
       .sort(null)
       .value(d => d);
-    
-    const svg = d3.select("#donut_chart")
+
+    const svg = d3.select("#donut_chart2")
       .append("svg")
       .attr("width", width)
       .attr("height", height)
@@ -37,19 +33,43 @@ fetch("EU_death_rate.csv")
       .enter().append("g")
       .attr("class", "arc");
 
-    // Create arcs with rounded edges for each data point
     g.append("path")
-      .attr("d", d => {
-        return createArc(d.startAngle, d.endAngle)();
-      })
+      .attr("d", arc)
       .style("fill", (_, i) => customColors[i]);
 
-     svg.append("text")
+    svg.append("text")
       .attr("text-anchor", "middle")
       .attr("dy", "0.35em")
       .text("1.9M DEATHS")
       .style("font-size", "20px")
       .style("fill", "black");
+
+    // Add labels
+    g.append("text")
+      .attr("transform", d => `translate(${arc.centroid(d)})`)
+      .attr("text-anchor", "middle")
+      .text((d, i) => `${labels[i]}: ${(100 * values[i] / values.reduce((a, b) => a + b, 0)).toFixed(1)}%`)
+      .style("font-size", "12px")
+      .style("fill", "black");
+
+    // Add legend
+    const legend = svg.selectAll(".legend")
+      .data(labels)
+      .enter()
+      .append("g")
+      .attr("class", "legend")
+      .attr("transform", (d, i) => `translate(-20,${i * 20})`);
+
+    legend.append("rect")
+      .attr("width", 10)
+      .attr("height", 10)
+      .attr("fill", (d, i) => customColors[i]);
+
+    legend.append("text")
+      .text(d => d)
+      .style("font-size", 12)
+      .attr("y", 10)
+      .attr("x", 11);
 
   })
   .catch(error => console.error('Error fetching CSV:', error));
