@@ -10,7 +10,9 @@ fetch("EU_death_rate.csv")
     const height = 400;
     const radius = Math.min(width, height) / 2;
     const arcPadding = 0.01;
-
+    // Calculate total value
+    const totalDeaths = (values.reduce((a, b) => a + b, 0)*10**-6).toFixed(1);
+    //add padding
     let arc = d3.arc()
       .innerRadius(radius * 0.6)
       .outerRadius(radius)
@@ -40,7 +42,7 @@ fetch("EU_death_rate.csv")
     svg.append("text")
       .attr("text-anchor", "middle")
       .attr("dy", "0.35em")
-      .text("1.9M DEATHS")
+      .text(`${totalDeaths }M DEATHS`)
       .style("font-size", "20px")
       .style("fill", "black");
 
