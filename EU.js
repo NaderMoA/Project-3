@@ -131,25 +131,5 @@ fetch("EU_death_rate.csv")
       .style("font-size", 12)
       .attr("y", 10)
       .attr("x", 11)
-      .on("mouseover", function (event, d, i) {
-        // Apply shadow effect on mouseover
-        g.filter((_, index) => index === i)
-          .select("path")
-          .style("filter", "url(#drop-shadow)");
-        // Make corresponding arc bold on mouseover
-        g.filter((_, index) => index === i)
-          .select("text")
-          .style("font-weight", "bold");
-      })
-      .on("mouseout", function (event, d, i) {
-        // Remove shadow effect on mouseout
-        g.filter((_, index) => index === i)
-          .select("path")
-          .style("filter", "none");
-        // Reset corresponding arc style on mouseout
-        g.filter((_, index) => index === i)
-          .select("text")
-          .style("font-weight", "normal");
-      });
   })
   .catch(error => console.error('Error fetching CSV:', error));
