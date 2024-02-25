@@ -37,7 +37,15 @@ fetch("EU_death_rate.csv")
 
     g.append("path")
       .attr("d", arc)
-      .style("fill", (_, i) => customColors[i]);
+      .style("fill", (_, i) => customColors[i])
+      .on("mouseover", function () {
+        // Apply shadow effect on mouseover
+        d3.select(this).style("filter", "url(#drop-shadow)");
+      })
+      .on("mouseout", function () {
+        // Remove shadow effect on mouseout
+        d3.select(this).style("filter", "none");
+      });
 
     svg.append("text")
       .attr("text-anchor", "middle")
@@ -69,5 +77,26 @@ fetch("EU_death_rate.csv")
       labelGroup.style("opacity", 0);
       g.style("opacity", 1);
     });
+
+    // Define the filter for the shadow effect
+    const defs = svg.append("defs");
+    const filter = defs.append("filter")
+      .attr("id", "drop-shadow")
+      .attr("height", "130%");
+
+    filter.append("feGaussianBlur")
+      .attr("in", "SourceAlpha")
+      .attr("stdDeviation", 3)
+      .attr("result", "blur");
+
+    filter.append("feOffset")
+      .attr("in", "blur")
+      .attr("dx", 3)
+      .attr("dy", 3)
+      .attr("result", "offsetBlur");
+
+    const feMerge = filter.append("feMerge");
+    feMerge.append("feMergeNode").attr("in", "offsetBlur");
+    feMerge.append("feMergeNode").attr("in", "SourceGraphic");
   })
   .catch(error => console.error('Error fetching CSV:', error));
