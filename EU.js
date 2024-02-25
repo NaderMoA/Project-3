@@ -98,5 +98,23 @@ fetch("EU_death_rate.csv")
     const feMerge = filter.append("feMerge");
     feMerge.append("feMergeNode").attr("in", "offsetBlur");
     feMerge.append("feMergeNode").attr("in", "SourceGraphic");
+    // Add legend
+    const legend = svg.selectAll(".legend")
+      .data(labels)
+      .enter()
+      .append("g")
+      .attr("class", "legend")
+      .attr("transform", (d, i) => `translate(-20,${i * 20})`); // Adjust vertical spacing between legend items
+
+    legend.append("rect")
+      .attr("width", 10)
+      .attr("height", 10)
+      .attr("fill", (d, i) => customColors[i]);
+
+    legend.append("text")
+      .text(d => d)
+      .style("font-size", 12)
+      .attr("y", 10)
+      .attr("x", 11);
   })
   .catch(error => console.error('Error fetching CSV:', error));
