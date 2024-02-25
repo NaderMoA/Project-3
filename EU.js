@@ -11,7 +11,7 @@ fetch("EU_death_rate.csv")
     const radius = Math.min(width, height) / 2;
     const arcPadding = 0.01;
     // Calculate total value
-    const totalDeaths = (values.reduce((a, b) => a + b, 0)*10**-6).toFixed(1);
+    const totalDeaths = (values.reduce((a, b) => a + b, 0) * 10 ** -6).toFixed(1);
     //add padding
     let arc = d3.arc()
       .innerRadius(radius * 0.6)
@@ -42,36 +42,32 @@ fetch("EU_death_rate.csv")
     svg.append("text")
       .attr("text-anchor", "middle")
       .attr("dy", "0.35em")
-      .text(`${totalDeaths }M DEATHS`)
+      .text(`${totalDeaths}M DEATHS`)
       .style("font-size", "20px")
       .style("fill", "black");
 
     // Add labels
-    g.append("text")
+    const labelGroup = svg.append("g").attr("class", "labels").selectAll("text")
+      .data(pie(values))
+      .enter()
+      .append("text")
+      .style("opacity", 0) // initially hide the labels
       .attr("transform", d => `translate(${arc.centroid(d)})`)
       .attr("text-anchor", "middle")
       .text((d, i) => `${labels[i]}: ${(100 * values[i] / values.reduce((a, b) => a + b, 0)).toFixed(1)}%`)
       .style("font-size", "12px")
       .style("fill", "black");
 
-    // Add legend
-    const legend = svg.selectAll(".legend")
-      .data(labels)
-      .enter()
-      .append("g")
-      .attr("class", "legend")
-      .attr("transform", (d, i) => `translate(-20,${i * 20})`);
-
-    legend.append("rect")
-      .attr("width", 10)
-      .attr("height", 10)
-      .attr("fill", (d, i) => customColors[i]);
-
-    legend.append("text")
-      .text(d => d)
-      .style("font-size", 12)
-      .attr("y", 10)
-      .attr("x", 11);
-
+    // Add event listeners for mouseover and mouseout
+    g.on("mouseover", function (event, d) {
+      // Show labels on mouseover
+      labelGroup.style("opacity", (_, i) => i === d.index ? 1 : 0);
+      // Make other arcs pale
+      g.style("opacity", (_, i) => i === d.index ? 1 : 0.5);
+    }).on("mouseout", function () {
+      // Hide labels and revert opacity on mouseout
+      labelGroup.style("opacity", 0);
+      g.style("opacity", 1);
+    });
   })
   .catch(error => console.error('Error fetching CSV:', error));
