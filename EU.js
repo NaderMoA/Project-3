@@ -78,7 +78,7 @@ fetch("EU_death_rate.csv")
       // Show labels on mouseover
       labelGroup.style("opacity", (_, i) => i === d.index ? 1 : 0);
       // Make other arcs pale
-      g.style("opacity", (_, i) => i === d.index ? 1 : 0.5);
+      g.style("opacity", (_, i) => i === d.index ? 1 : 0.3);
       // Make legend item bold on mouseover
       legend.filter((_, i) => i === d.index)
         .select("text")
@@ -100,7 +100,7 @@ fetch("EU_death_rate.csv")
 
     filter.append("feGaussianBlur")
       .attr("in", "SourceAlpha")
-      .attr("stdDeviation", 3)
+      .attr("stdDeviation", 10)
       .attr("result", "blur");
 
     filter.append("feOffset")
