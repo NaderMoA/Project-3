@@ -305,7 +305,7 @@ fetch("EU_death_rate.csv")
 
 // The Map
 
-const map = L.map('map').setView([48.5260, 15.2551], 4);
+const map = L.map('map').setView([53.5260, 15.2551], 3.45);
 // Adding the tile layer
 const Esri_WorldGrayCanvas = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
     attribution: 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ',
