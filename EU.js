@@ -16,14 +16,7 @@ fetch("EU_death_rate.csv")
     const sortedValues = data.map(item => item.value);
     const sortedLabels = data.map(item => item.label);
 
-    const customColors = ['#e5526f',
-    '#f4d650',
-    '#acddbf',
-    '#ff683b',
-    '#2f3f58',
-    '#af96cf',
-    '#c50604',
-    '#2573a1'];
+    const customColors = ['#e5526f', '#f4d650', '#acddbf', '#ff683b', '#2f3f58', '#af96cf', '#c50604', '#2573a1'];
     const width = 700; // Increased width to accommodate the legend
     const height = 500;
     const radius = Math.min(width, height) / 3;
@@ -309,3 +302,36 @@ fetch("EU_death_rate.csv")
       .attr("x", 11)
   })
   .catch(error => console.error('Error fetching CSV:', error));
+
+// The Map
+
+const map = L.map('map').setView([48.5260, 15.2551], 4);
+// Adding the tile layer
+const Esri_WorldGrayCanvas = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
+    attribution: 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ',
+    maxZoom: 16
+}).addTo(map);
+fetch("Ch21_Europe_M.csv")
+    .then(response => response.text())
+    .then(csvData => {
+        // Parse the CSV data
+        const parsedData = Papa.parse(csvData, { header: true }).data;
+
+        // Iterate over each row of the parsed data
+        parsedData.forEach(row => {
+            const countryName = row['CNTRY_TERR']; // Get the country name
+            const cancerType = row['VALUE']; // Get the cancer type or any other relevant data
+
+            // Find the corresponding feature (country) on the map
+            const countryFeature = findFeatureByCountryName(countryName);
+
+            // Add the cancer-related data as a property to the feature
+            if (countryFeature) {
+                countryFeature.properties.cancerType = cancerType;
+
+                // Style the map feature based on the cancer-related data
+                styleFeature(countryFeature);
+            }
+        });
+    })
+    .catch(error => console.error('Error fetching or parsing CSV:', error));
