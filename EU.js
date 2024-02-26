@@ -172,7 +172,7 @@ fetch("EU_death_rate.csv")
     const sortedLabels = data.map(item => item.label);
 
     // Define custom colors for the chart
-    const customColors = ['#ff6ec7', '#00ffff', '#39ff14', '#ffff00', '#ff9933', '#bf40bf', '#ff2400', '#00ffff', '#ff00ff', '#00ffef'];
+    const customColors = ['#22b1b9', '#ccaeea', '#efcb6d', '#036264','#38a2ff', '#f77b1c', '#567e99', '#ffc215'];
 
     // Define dimensions for the chart
     const width = 700;
