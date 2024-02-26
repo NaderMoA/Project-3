@@ -62,15 +62,15 @@ fetch("top_ten_deadliest_cancers.csv")
   function getImageUrl(cancerType) {
     const imageUrls = {
       "Pancreatic cancer": 'https://cdn.mos.cms.futurecdn.net/6nZWaqsX5KvF8AB2QTj7NS-650-80.jpg.webp',
-      "Mesothelioma": 'https://www.mesotheliomavets.com/app/uploads/2021/10/GettyImages-1088865268-Converted-01-scaled.jpg',
+      "Mesothelioma": 'https://blogs.bcm.edu/wp-content/uploads/2019/09/Lungs-673804650.jpg',
       "Gallbladder cancer": 'https://cdn.mos.cms.futurecdn.net/ZDg6kuMbd6tDPN8nPdVSr5-650-80.jpg.webp',
-      "Esophageal cancer": 'https://cdn.mos.cms.futurecdn.net/VeQtbmUPLZusw4EHVH56ER-650-80.jpg.webp',
+      "Esophageal cancer": 'https://t3.ftcdn.net/jpg/05/75/74/50/360_F_575745096_3hmXuAisn1ll6jREVvZ8qQpYWM3KDmYC.jpg',
       "Liver and intrahepatic bile duct cancer": 'https://cdn.mos.cms.futurecdn.net/SZPWm9nQ5NgVq7AtrTwTkJ-650-80.jpg.webp',
-      "Lung and bronchial cancer": 'https://cdn.mos.cms.futurecdn.net/ryxnvpAwzSZmC7PA6NsN6L-650-80.jpg.webp',
-      "Pleural cancer": 'https://upload.wikimedia.org/wikipedia/commons/0/0d/2313_The_Lung_Pleurea.jpg',
-      "Acute monocytic leukemia": 'https://cdn-assets-eu.frontify.com/s3/frontify-enterprise-files-eu/eyJwYXRoIjoiaWhoLWhlYWx0aGNhcmUtYmVyaGFkXC9maWxlXC9tMTYyZGZEZ1RocjQ4V0tWajlEei5qcGcifQ:ihh-healthcare-berhad:oUXLo02sDB-J7aqLBgNtOWCg8clfGj5HKv0JCCzc6Rw?width=%7Bwidth%7D',
-      "Brain cancer": 'https://media-cldnry.s-nbcnews.com/image/upload/t_fit-1500w,f_auto,q_auto:best/newscms/2017_15/1336291/151211-brain-intelligence-mn-1045.jpg',
-      "Acute myeloid leukemia": 'https://nci-media.cancer.gov/pdq/media/images/755927.jpg'
+      "Lung and bronchial cancer": 'https://st.depositphotos.com/1265046/1328/i/450/depositphotos_13281363-stock-photo-human-thorax-organs-with-lungs.jpg',
+      "Pleural cancer": 'https://media.istockphoto.com/id/496266075/photo/lungs-male-anatomy-posterior-x-ray-view.jpg?s=612x612&w=0&k=20&c=B0eRxXBmOAT2XwMNtZOG1G6RtDCtzB5qKKo3RSsHkzY=',
+      "Acute monocytic leukemia": 'https://img.freepik.com/premium-photo/monocyte-left-lymphocyte-right-surrounded-by-red-blood-cells-3d-illustration_938508-5305.jpg?size=626&ext=jpg&ga=GA1.1.1546980028.1702857600&semt=sph',
+      "Brain cancer": 'https://www.thestatesman.com/wp-content/uploads/2022/06/brain-1.jpg',
+      "Acute myeloid leukemia": 'https://media.istockphoto.com/id/685452836/video/femur.jpg?s=640x640&k=20&c=IJOyK56KwW9sYTehX-PkT1r35PI6jBaUK8azYPsZiIc='
     };
     return imageUrls[cancerType];
   }
