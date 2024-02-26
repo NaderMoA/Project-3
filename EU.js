@@ -1,221 +1,311 @@
-// Fetch data for the first donut chart (1.9M DEATHS)
 fetch("EU_death_rate.csv")
   .then(response => response.text())
   .then(csvData => {
     const parsedData = Papa.parse(csvData, { header: true, dynamicTyping: true }).data;
-    const filteredData = parsedData.filter(row => row['1.9M DEATHS'] !== undefined && row['1.9M DEATHS'] !== null && row['1.9M DEATHS'] !== 0);
-    const values1 = filteredData.map(row => parseFloat(row['1.9M DEATHS']));
-    const labels1 = filteredData.map(row => row['Category']);
-    const customColors1 = ['#ffb3ba', '#ffdfba', '#ffffba', '#baffc9', '#bae1ff', '#ffb3ba', '#ffdfba', '#ffffba', '#baffc9', '#bae1ff'];
-    const width1 = 700;
-    const height1 = 500;
-    const radius1 = Math.min(width1, height1) / 3;
-    const arcPadding1 = 0.01;
-    const totalDeaths1 = (values1.reduce((a, b) => a + b, 0) * 10 ** -6).toFixed(1);
-    let arc1 = d3.arc()
-      .innerRadius(radius1 * 0.6)
-      .outerRadius(radius1)
+    const filteredData = parsedData.filter(row => row['1.9M DEATHS'] !== undefined && row['1.9M DEATHS'] !== null);
+    const values = filteredData.map(row => parseFloat(row['1.9M DEATHS']));
+    const labels = filteredData.map(row => row['Category']);
+    
+    // Combine values and labels into objects for sorting
+    const data = values.map((value, index) => ({ value, label: labels[index] }));
+    
+    // Sort the data by value in descending order
+    data.sort((a, b) => b.value - a.value);
+    
+    // Extract sorted values and labels
+    const sortedValues = data.map(item => item.value);
+    const sortedLabels = data.map(item => item.label);
+
+    const customColors = ['#e5526f',
+    '#f4d650',
+    '#acddbf',
+    '#ff683b',
+    '#2f3f58',
+    '#af96cf',
+    '#c50604',
+    '#2573a1'];
+    const width = 700; // Increased width to accommodate the legend
+    const height = 500;
+    const radius = Math.min(width, height) / 3;
+    const arcPadding = 0.01;
+    // Calculate total value
+    const totalDeaths = (sortedValues.reduce((a, b) => a + b, 0) * 10 ** -6).toFixed(1);
+    // Add padding
+    let arc = d3.arc()
+      .innerRadius(radius * 0.6)
+      .outerRadius(radius)
       .cornerRadius(5)
-      .padAngle(arcPadding1);
-    const pie1 = d3.pie()
+      .padAngle(arcPadding);
+
+    const pie = d3.pie()
       .sort(null)
       .value(d => d);
-    const svg1 = d3.select("#donut_chart1")
+
+    const svg = d3.select("#donut_chart2")
       .append("svg")
-      .attr("width", width1)
-      .attr("height", height1)
+      .attr("width", width)
+      .attr("height", height)
       .append("g")
-      .attr("transform", `translate(${width1 / 2},${height1 / 2})`);
-    const g1 = svg1.selectAll(".arc")
-      .data(pie1(values1))
+      .attr("transform", `translate(${width / 2},${height / 2})`);
+
+    const g = svg.selectAll(".arc")
+      .data(pie(sortedValues))
       .enter().append("g")
       .attr("class", "arc");
-    g1.append("path")
-      .attr("d", arc1)
-      .style("fill", (_, i) => customColors1[i])
+
+    g.append("path")
+      .attr("d", arc)
+      .style("fill", (_, i) => customColors[i])
       .on("mouseover", function (event, d) {
-        d3.select(this).style("filter", "url(#drop-shadow1)");
-        d3.select(this).style("opacity", "0.7");
-        labelGroup1.style("opacity", (_, i) => i === d.index ? 1 : 0);
-        legend1.filter((_, i) => i === d.index)
+        // Apply shadow effect on mouseover
+        d3.select(this).style("filter", "url(#drop-shadow)");
+        // Make legend item bold on mouseover
+        legend.filter((_, i) => i === d.index)
           .select("text")
           .style("font-weight", "bold");
       })
       .on("mouseout", function () {
+        // Remove shadow effect on mouseout
         d3.select(this).style("filter", "none");
-        d3.select(this).style("opacity", "1");
-        labelGroup1.style("opacity", 0);
-        legend1.selectAll("text")
+        // Reset legend item style on mouseout
+        legend.selectAll("text")
           .style("font-weight", "normal");
       });
-    svg1.append("text")
+
+    svg.append("text")
       .attr("text-anchor", "middle")
       .attr("dy", "0.35em")
-      .text(`${totalDeaths1}M DEATHS`)
+      .text(`${totalDeaths}M DEATHS`)
       .style("font-size", "20px")
       .style("fill", "black");
-    const labelGroup1 = svg1.append("g").attr("class", "labels").selectAll("text")
-      .data(pie1(values1))
+
+    // Add labels
+    const labelGroup = svg.append("g").attr("class", "labels").selectAll("text")
+      .data(pie(sortedValues))
       .enter()
       .append("text")
-      .style("opacity", 0)
-      .attr("transform", d => `translate(${arc1.centroid(d)})`)
+      .style("opacity", 0) // initially hide the labels
+      .attr("transform", d => `translate(${arc.centroid(d)})`)
       .attr("text-anchor", "middle")
-      .text((d, i) => `${labels1[i]}: ${(100 * values1[i] / values1.reduce((a, b) => a + b, 0)).toFixed(1)}%`)
+      .text((d, i) => `${sortedLabels[i]}: ${(100 * sortedValues[i] / sortedValues.reduce((a, b) => a + b, 0)).toFixed(1)}%`)
       .style("font-size", "12px")
       .style("fill", "black");
-    g1.on("mouseover", function (event, d) {
-      labelGroup1.style("opacity", (_, i) => i === d.index ? 1 : 0);
-      g1.style("opacity", (_, i) => i === d.index ? 0.7 : 0.3);
+
+    // Add event listeners for mouseover and mouseout
+    g.on("mouseover", function (event, d) {
+      // Show labels on mouseover
+      labelGroup.style("opacity", (_, i) => i === d.index ? 1 : 0);
+      // Make other arcs pale
+      g.style("opacity", (_, i) => i === d.index ? 1 : 0.3);
+      // Make legend item bold on mouseover
+      legend.filter((_, i) => i === d.index)
+        .select("text")
+        .style("font-weight", "bold");
     }).on("mouseout", function () {
-      labelGroup1.style("opacity", 0);
-      g1.style("opacity", 1);
+      // Hide labels and revert opacity on mouseout
+      labelGroup.style("opacity", 0);
+      g.style("opacity", 1);
+      // Reset legend item style on mouseout
+      legend.selectAll("text")
+        .style("font-weight", "normal");
     });
-    const defs1 = svg1.append("defs");
-    const filter1 = defs1.append("filter")
-      .attr("id", "drop-shadow1")
+
+    // Define the filter for the shadow effect
+    const defs = svg.append("defs");
+    const filter = defs.append("filter")
+      .attr("id", "drop-shadow")
       .attr("height", "130%");
-    filter1.append("feGaussianBlur")
+
+    filter.append("feGaussianBlur")
       .attr("in", "SourceAlpha")
       .attr("stdDeviation", 10)
       .attr("result", "blur");
-    filter1.append("feOffset")
+
+    filter.append("feOffset")
       .attr("in", "blur")
       .attr("dx", 3)
       .attr("dy", 3)
       .attr("result", "offsetBlur");
-    const feMerge1 = filter1.append("feMerge");
-    feMerge1.append("feMergeNode").attr("in", "offsetBlur");
-    feMerge1.append("feMergeNode").attr("in", "SourceGraphic");
 
-    // Add legend for the first chart
-    const legend1 = svg1.selectAll(".legend1")
-      .data(labels1)
+    const feMerge = filter.append("feMerge");
+    feMerge.append("feMergeNode").attr("in", "offsetBlur");
+    feMerge.append("feMergeNode").attr("in", "SourceGraphic");
+
+    // Add legend
+    const legend = svg.selectAll(".legend")
+      .data(sortedLabels)
       .enter()
       .append("g")
-      .attr("class", "legend1")
-      .attr("transform", (d, i) => `translate(200,${i * 20})`);
+      .attr("class", "legend")
+      .attr("transform", (d, i) => `translate(200,${i * 20})`); // Adjust vertical spacing between legend items
 
-    legend1.append("rect")
+    legend.append("rect")
       .attr("width", 10)
       .attr("height", 10)
-      .attr("fill", (d, i) => customColors1[i]);
+      .attr("fill", (d, i) => customColors[i]);
 
-    legend1.append("text")
+    legend.append("text")
       .text(d => d)
       .style("font-size", 12)
       .attr("y", 10)
-      .attr("x", 11);
+      .attr("x", 11)
   })
   .catch(error => console.error('Error fetching CSV:', error));
 
-// Fetch data for the second donut chart (3.9M CASES)
+// anothor donut chart
 fetch("EU_death_rate.csv")
   .then(response => response.text())
   .then(csvData => {
     const parsedData = Papa.parse(csvData, { header: true, dynamicTyping: true }).data;
+    
+    // Filter out rows with undefined or null values in 'Category' and '3.9M CASES' columns
     const filteredData = parsedData.filter(row => row['Category'] !== undefined && row['3.9M CASES'] !== undefined && row['3.9M CASES'] !== null && row['3.9M CASES'] !== 0);
-    const values2 = filteredData.map(row => parseFloat(row['3.9M CASES']));
-    const labels2 = filteredData.map(row => row['Category']);
-    const customColors2 = ['#ffb3ba', '#ffdfba', '#ffffba', '#baffc9', '#bae1ff', '#ffb3ba', '#ffdfba', '#ffffba', '#baffc9', '#bae1ff'];
-    const width2 = 700;
-    const height2 = 500;
-    const radius2 = Math.min(width2, height2) / 3;
-    const arcPadding2 = 0.01;
-    const totalCases2 = (values2.reduce((a, b) => a + b, 0) * 10 ** -6).toFixed(1);
-    let arc2 = d3.arc()
-      .innerRadius(radius2 * 0.6)
-      .outerRadius(radius2)
+    
+    // Combine values and labels into objects for sorting
+    const data = filteredData.map(row => ({ value: parseFloat(row['3.9M CASES']), label: row['Category'] }));
+    
+    // Sort the data by value in descending order
+    data.sort((a, b) => b.value - a.value);
+    
+    // Extract sorted values and labels
+    const sortedValues = data.map(item => item.value);
+    const sortedLabels = data.map(item => item.label);
+
+    // Define custom colors for the chart
+    const customColors = ['#ff6ec7', '#00ffff', '#39ff14', '#ffff00', '#ff9933', '#bf40bf', '#ff2400', '#00ffff', '#ff00ff', '#00ffef'];
+
+    // Define dimensions for the chart
+    const width = 700;
+    const height = 500;
+    const radius = Math.min(width, height) / 3;
+    const arcPadding = 0.01;
+
+    // Calculate total value
+    const totalCases = (sortedValues.reduce((a, b) => a + b, 0) * 10 ** -6).toFixed(1);
+
+    // Define arc generator
+    let arc = d3.arc()
+      .innerRadius(radius * 0.6)
+      .outerRadius(radius)
       .cornerRadius(5)
-      .padAngle(arcPadding2);
-    const pie2 = d3.pie()
+      .padAngle(arcPadding);
+
+    // Define pie generator
+    const pie = d3.pie()
       .sort(null)
       .value(d => d);
-    const svg2 = d3.select("#donut_chart2")
+
+    // Create SVG element
+    const svg = d3.select("#donut_chart1")
       .append("svg")
-      .attr("width", width2)
-      .attr("height", height2)
+      .attr("width", width)
+      .attr("height", height)
       .append("g")
-      .attr("transform", `translate(${width2 / 2},${height2 / 2})`);
-    const g2 = svg2.selectAll(".arc")
-      .data(pie2(values2))
+      .attr("transform", `translate(${width / 2},${height / 2})`);
+
+    // Create arcs
+    const g = svg.selectAll(".arc")
+      .data(pie(sortedValues))
       .enter().append("g")
       .attr("class", "arc");
-    g2.append("path")
-      .attr("d", arc2)
-      .style("fill", (_, i) => customColors2[i])
+
+    // Append path elements for each arc
+    g.append("path")
+      .attr("d", arc)
+      .style("fill", (_, i) => customColors[i])
       .on("mouseover", function (event, d) {
-        d3.select(this).style("filter", "url(#drop-shadow2)");
-        d3.select(this).style("opacity", "0.7");
-        labelGroup2.style("opacity", (_, i) => i === d.index ? 1 : 0);
-        legend2.filter((_, i) => i === d.index)
+        // Apply shadow effect on mouseover
+        d3.select(this).style("filter", "url(#drop-shadow)");
+        // Make legend item bold on mouseover
+        legend.filter((_, i) => i === d.index)
           .select("text")
           .style("font-weight", "bold");
       })
       .on("mouseout", function () {
+        // Remove shadow effect on mouseout
         d3.select(this).style("filter", "none");
-        d3.select(this).style("opacity", "1");
-        labelGroup2.style("opacity", 0);
-        legend2.selectAll("text")
+        // Reset legend item style on mouseout
+        legend.selectAll("text")
           .style("font-weight", "normal");
       });
-    svg2.append("text")
+
+    // Add total cases text
+    svg.append("text")
       .attr("text-anchor", "middle")
       .attr("dy", "0.35em")
-      .text(`${totalCases2}M CASES`)
+      .text(`${totalCases}M CASES`)
       .style("font-size", "20px")
       .style("fill", "black");
-    const labelGroup2 = svg2.append("g").attr("class", "labels").selectAll("text")
-      .data(pie2(values2))
+
+    // Add labels
+    const labelGroup = svg.append("g").attr("class", "labels").selectAll("text")
+      .data(pie(sortedValues))
       .enter()
       .append("text")
-      .style("opacity", 0)
-      .attr("transform", d => `translate(${arc2.centroid(d)})`)
+      .style("opacity", 0) // initially hide the labels
+      .attr("transform", d => `translate(${arc.centroid(d)})`)
       .attr("text-anchor", "middle")
-      .text((d, i) => `${labels2[i]}: ${(100 * values2[i] / values2.reduce((a, b) => a + b, 0)).toFixed(1)}%`)
+      .text((d, i) => `${sortedLabels[i]}: ${(100 * sortedValues[i] / sortedValues.reduce((a, b) => a + b, 0)).toFixed(1)}%`)
       .style("font-size", "12px")
       .style("fill", "black");
-    g2.on("mouseover", function (event, d) {
-      labelGroup2.style("opacity", (_, i) => i === d.index ? 1 : 0);
-      g2.style("opacity", (_, i) => i === d.index ? 0.7 : 0.3);
+
+    // Add event listeners for mouseover and mouseout
+    g.on("mouseover", function (event, d) {
+      // Show labels on mouseover
+      labelGroup.style("opacity", (_, i) => i === d.index ? 1 : 0);
+      // Make other arcs pale
+      g.style("opacity", (_, i) => i === d.index ? 1 : 0.3);
+      // Make legend item bold on mouseover
+      legend.filter((_, i) => i === d.index)
+        .select("text")
+        .style("font-weight", "bold");
     }).on("mouseout", function () {
-      labelGroup2.style("opacity", 0);
-      g2.style("opacity", 1);
+      // Hide labels and revert opacity on mouseout
+      labelGroup.style("opacity", 0);
+      g.style("opacity", 1);
+      // Reset legend item style on mouseout
+      legend.selectAll("text")
+        .style("font-weight", "normal");
     });
-    const defs2 = svg2.append("defs");
-    const filter2 = defs2.append("filter")
-      .attr("id", "drop-shadow2")
+
+    // Define the filter for the shadow effect
+    const defs = svg.append("defs");
+    const filter = defs.append("filter")
+      .attr("id", "drop-shadow")
       .attr("height", "130%");
-    filter2.append("feGaussianBlur")
+
+    filter.append("feGaussianBlur")
       .attr("in", "SourceAlpha")
       .attr("stdDeviation", 10)
       .attr("result", "blur");
-    filter2.append("feOffset")
+
+    filter.append("feOffset")
       .attr("in", "blur")
       .attr("dx", 3)
       .attr("dy", 3)
       .attr("result", "offsetBlur");
-    const feMerge2 = filter2.append("feMerge");
-    feMerge2.append("feMergeNode").attr("in", "offsetBlur");
-    feMerge2.append("feMergeNode").attr("in", "SourceGraphic");
 
-    // Add legend for the second chart
-    const legend2 = svg2.selectAll(".legend2")
-      .data(labels2)
+    const feMerge = filter.append("feMerge");
+    feMerge.append("feMergeNode").attr("in", "offsetBlur");
+    feMerge.append("feMergeNode").attr("in", "SourceGraphic");
+
+    // Add legend
+    const legend = svg.selectAll(".legend")
+      .data(sortedLabels)
       .enter()
       .append("g")
-      .attr("class", "legend2")
-      .attr("transform", (d, i) => `translate(200,${i * 20})`);
+      .attr("class", "legend")
+      .attr("transform", (d, i) => `translate(200,${i * 20})`); // Adjust vertical spacing between legend items
 
-    legend2.append("rect")
+    legend.append("rect")
       .attr("width", 10)
       .attr("height", 10)
-      .attr("fill", (d, i) => customColors2[i]);
+      .attr("fill", (d, i) => customColors[i]);
 
-    legend2.append("text")
+    legend.append("text")
       .text(d => d)
       .style("font-size", 12)
       .attr("y", 10)
-      .attr("x", 11);
+      .attr("x", 11)
   })
   .catch(error => console.error('Error fetching CSV:', error));
