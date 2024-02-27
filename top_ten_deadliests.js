@@ -28,7 +28,7 @@ fetch("Resources/EU/top_ten_deadliest_cancers.csv")
     title: 'Top Ten Deadliest Cancers and Their Survival Rates',
     xaxis: {
       title: '5 Year Survival Rate (%)',
-      range: [0, 40] // Set the range of x-axis to 0-100
+      range: [0, 35] // Set the range of x-axis to 0-100
     },
     yaxis: {
       title: 'Cancer Type'
