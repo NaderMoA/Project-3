@@ -1,0 +1,25 @@
+Cancer Types,Males (%),Females (%)
+Lung,23.1,23.7
+Breast (female),n/a,14.6
+Colorectal,11.0,10.4
+Prostate,10.4,n/a
+Pancreas,6.6,6.4
+Liver,4.9,3.0
+Ovary,n/a,4.8
+Uterus,n/a,3.5
+Leukemia,4.2,3.3
+Bladder,4.1,1.8
+Esophagus,3.9,1.3
+Non-Hodgkin lymphoma,3.6,3.4
+Stomach,3.2,2.0
+Brain,3.2,2.6
+Oral cavity & pharynx,2.5,1.2
+Kidney,2.4,1.5
+Melanoma,2.2,1.3
+Myeloma,2.1,1.8
+Cervix,n/a,1.2
+Larynx,0.7,0.2
+Thyroid,0.3,0.4
+Hodgkin lymphoma,0.2,0.1
+Testis,0.1,n/a
+All other types,11.4,11.5
