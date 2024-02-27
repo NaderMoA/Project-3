@@ -15,12 +15,12 @@ def extract_filename(url):
     return filename
 
 # Loop through the URLs
-for i, url in enumerate(urls):
+for url in urls:
     response = requests.get(url)
     if response.status_code == 200:
-        filename = f'file{i+1}.csv'  # Creates a unique filename for each file
+        filename = extract_filename(url)
         with open(filename, 'wb') as file:
             file.write(response.content)
-        print(f"File {filename} downloaded successfully.")
+        print(f"{filename} downloaded successfully.")
     else:
         print(f"Failed to download {url}. Status code: {response.status_code}")
