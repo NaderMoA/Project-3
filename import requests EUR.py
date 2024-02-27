@@ -6,7 +6,7 @@ urls = [
     'https://www.dropbox.com/scl/fi/05uwipxr5nd1zxi12mh5s/common_cancer_f.csv?rlkey=a3ilb6mwh48dtjatxumynpfpk&dl=1',
     'https://www.dropbox.com/scl/fi/ajr79p7cauubm5bnrdmjm/common_cancer_m.csv?rlkey=4ulpsej4alnejeer64da7q9im&dl=1',
     'https://www.dropbox.com/scl/fi/eratabnixaqb2n1dps1ok/lifetime_risk_mf.csv?rlkey=n7p8yrdjgq5arxw1r7ap2t4ye&dl=1',
-    'https://www.dropbox.com/scl/fi/vq77hi5s10y7z1unfjxei/new_vs_death.csv?rlkey=whn2fbz22hyhhzven7yfkagre&dl=1'
+    'https://www.dropbox.com/scl/fi/vq77hi5s10y7z1unfjxei/new_vs_death.csv?rlkey=whn2fbz22hyhhzven7yfkagre&dl=1',
 ]
 
 # Function to extract file name from URL
