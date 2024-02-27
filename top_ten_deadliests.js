@@ -1,5 +1,5 @@
 // Fetch the CSV file
-fetch("top_ten_deadliest_cancers.csv")
+fetch("Resources/EU/top_ten_deadliest_cancers.csv")
 .then(response => response.text())
 .then(csvData => {
   // Parse the CSV data using Papaparse

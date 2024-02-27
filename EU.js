@@ -1,4 +1,4 @@
-fetch("EU_death_rate.csv")
+fetch("Resources/EU/new_vs_death.csv")
   .then(response => response.text())
   .then(csvData => {
     const parsedData = Papa.parse(csvData, { header: true, dynamicTyping: true }).data;
@@ -146,7 +146,7 @@ fetch("EU_death_rate.csv")
   .catch(error => console.error('Error fetching CSV:', error));
 
 // anothor donut chart
-fetch("EU_death_rate.csv")
+fetch("Resources/EU/new_vs_death.csv")
   .then(response => response.text())
   .then(csvData => {
     const parsedData = Papa.parse(csvData, { header: true, dynamicTyping: true }).data;
@@ -305,33 +305,66 @@ fetch("EU_death_rate.csv")
 
 // The Map
 
-const map = L.map('map').setView([53.5260, 15.2551], 3.45);
-// Adding the tile layer
+// Initialize Leaflet map
+const map = L.map('map').setView([0, 0], 2); // Set initial map view to a specific location and zoom level
+
+// Add the Esri base layer to the map
 const Esri_WorldGrayCanvas = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
     attribution: 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ',
     maxZoom: 16
 }).addTo(map);
-fetch("Ch21_Europe_M.csv")
-    .then(response => response.text())
-    .then(csvData => {
-        // Parse the CSV data
-        const parsedData = Papa.parse(csvData, { header: true }).data;
 
-        // Iterate over each row of the parsed data
-        parsedData.forEach(row => {
-            const countryName = row['CNTRY_TERR']; // Get the country name
-            const cancerType = row['VALUE']; // Get the cancer type or any other relevant data
+fetch("https://gist.githubusercontent.com/NaderMoA/b345d653276912fa6e9a0f2aed6fdb25/raw/426fb47f0a6793776a044f17e66d17cbbf8061ad/countries.geo.json")
+    .then(response => response.json())
+    .then(geojsonData => {
+        // Fetch the CSV data
+        fetch("Resources/EU/common_cancer_m.csv")
+            .then(response => response.text())
+            .then(csvData => {
+                // Parse CSV data
+                const parsedData = Papa.parse(csvData, { header: true }).data;
 
-            // Find the corresponding feature (country) on the map
-            const countryFeature = findFeatureByCountryName(countryName);
+                // Loop through GeoJSON features
+                geojsonData.features.forEach(feature => {
+                    // Extract id from GeoJSON properties
+                    const id = feature.id;
 
-            // Add the cancer-related data as a property to the feature
-            if (countryFeature) {
-                countryFeature.properties.cancerType = cancerType;
+                    // Find corresponding row in CSV data
+                    const rowData = parsedData.find(row => row['ISO_3_CODE'] === id);
 
-                // Style the map feature based on the cancer-related data
-                styleFeature(countryFeature);
-            }
-        });
+                    // If data found, customize GeoJSON feature style
+                    if (rowData) {
+                        const cancerType = rowData['VALUE'];
+                        // Customize the fill color based on cancer type
+                        feature.properties.fillColor = getCancerColor(cancerType);
+                    }
+                });
+
+                // Add the GeoJSON layer to the map
+                L.geoJSON(geojsonData, {
+                    style: function(feature) {
+                        return {
+                            fillColor: feature.properties.fillColor || '#ffffff', // Default fill color if no match found in CSV
+                            color: '#000000', // Default border color
+                            weight: 1, // Default border width
+                            fillOpacity: 0.7 // Default fill opacity
+                        };
+                    }
+                }).addTo(map);
+            })
+            .catch(error => console.error('Error fetching or parsing CSV:', error));
     })
-    .catch(error => console.error('Error fetching or parsing CSV:', error));
+    .catch(error => console.error('Error fetching or parsing GeoJSON:', error));
+
+// Function to get color based on cancer type
+function getCancerColor(cancerType) {
+    // Define color mappings for different cancer types
+    const colorMap = {
+        'Lung': '#ff0000', // Red for Lung cancer
+        'Prostate': '#00ff00', // Green for Prostate cancer
+        // Add more mappings as needed
+    };
+
+    // Return color from the mapping, or a default color if not found
+    return colorMap[cancerType] || '#000000'; // Default to black if no match found
+}
