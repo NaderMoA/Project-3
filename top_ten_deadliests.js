@@ -6,17 +6,15 @@ fetch("Resources/EU/top_ten_deadliest_cancers.csv")
   const parsedData = Papa.parse(csvData, { header: true }).data;
   parsedData.sort((a, b) => parseFloat(b['Survival Rate%']) - parseFloat(a['Survival Rate%']));
   // Now 'parsedData' is an array of objects representing each row in the CSV file
-  // You can use it to create your Plotly chart or perform any other operations
   
   // For example, you can plot a chart using Plotly
-  const x = parsedData.map(row => row['Survival Rate%']);
   const y = parsedData.map(row => row['Deadliest Cancers']);
   const customColors = [
     "#012d36", "#06b6a7", "#ffc215", "#fb9600", "#db1048", "#fe6974","#6eb8db","#8fe6eb","#ff8bbe","#febecf"
   ];
 
   const plotlyData = [{
-    x: x,
+    x: Array(parsedData.length).fill(0), // Initialize x-values to zero
     y: y,
     type: 'bar',
     orientation: 'h',
@@ -29,7 +27,8 @@ fetch("Resources/EU/top_ten_deadliest_cancers.csv")
   const layout = {
     title: 'Top Ten Deadliest Cancers and Their Survival Rates',
     xaxis: {
-      title: '5 Year Survival Rate (%)'
+      title: '5 Year Survival Rate (%)',
+      range: [0, 40] // Set the range of x-axis to 0-100
     },
     yaxis: {
       title: 'Cancer Type'
@@ -39,7 +38,29 @@ fetch("Resources/EU/top_ten_deadliest_cancers.csv")
     hovermode: 'closest',
   };
 
-  Plotly.newPlot('horizontal_bar_chart', plotlyData, layout);
+  // Add animation configuration
+  const config = {
+    displayModeBar: false,
+    responsive: true
+  };
+
+  Plotly.newPlot('horizontal_bar_chart', plotlyData, layout, config);
+
+  // Animate the chart by updating the x-values
+  setTimeout(() => {
+    Plotly.animate('horizontal_bar_chart', {
+      data: [{ x: parsedData.map(row => row['Survival Rate%']) }] // Update x-values to actual survival rates
+    }, {
+      transition: {
+        duration: 3000, // Animation duration in milliseconds
+        easing: 'cubic-in-out' // Easing function
+      },
+      frame: {
+        duration: 5000, // Time spent on each frame in milliseconds
+        redraw: true // Redraw the chart on each frame
+      }
+    });
+  }, 200); // Start the animation after 2 seconds
   
   // defining click event
   document.getElementById('horizontal_bar_chart').on('plotly_click', function(data) {
