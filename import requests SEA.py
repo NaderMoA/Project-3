@@ -1,5 +1,5 @@
 import requests
-
+import os
 # List of URLs to download
 urls = [
     'https://www.dropbox.com/scl/fi/hxqhbil4hj2ougx2nrwp4/cancer_incidence_asr_mf.csv?rlkey=k8sesbdjatnvhl4tvodv8ksv7&dl=1',
@@ -9,7 +9,13 @@ urls = [
     'https://www.dropbox.com/scl/fi/p604rvse7nttwo8m3jobf/new_vs_death.csv?rlkey=62rxqdk63lutbiugj57ez1fg3&dl=1'
 ]
 
+def extract_filename(url):
+    path = url.split('?')[0]  # Remove query string
+    filename = path.split('/')[-1]  # Extract file name
+    return filename
+    
 # Loop through the URLs
+
 for i, url in enumerate(urls):
     response = requests.get(url)
     if response.status_code == 200:
