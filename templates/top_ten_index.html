@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Global Cancer Analysis</title>
+  
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <link rel="stylesheet" href="stylesheet.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+</head>
+
+<body>
+  <!-- <div class="Top Ten Deadliest"></div> -->
+  <!-- Specify the ID for the div where the chart will be displayed -->
+  <div id="horizontal_bar_chart"></div>
+  <div id="donut_chart1" style="height: 400px;"></div>
+  <div id="donut_chart2" style="height: 400px;"></div>
+  <div id="tooltip" class="tooltip"></div>
+  <div id="facts" class="text"></div>
+  <div id="map" style="height: 400px;"></div>
+  <script src="top_ten_deadliests.js"></script>
+  <script src="EU.js"></script>
+
+  
+</body>
+</html>
