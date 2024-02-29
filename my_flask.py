@@ -21,10 +21,10 @@ def index():
 @app.route('/Europe')
 def get_data():
     db = mongo["EU"]
-    common_cancers_male = list(mongo.db.collection.find())
-    #common_cancers_male = db["common_cancers_male"]
-    return jsonify(common_cancers_male)
-    #return jsonify(common_cancers_male)
-    #return jsonify(common_cancers_male)
+    common_cancers_male = db['common_cancer_male']
+    print("before the list")
+    data = list(common_cancers_male.find())  # Fetch data from the collection
+    return jsonify(data)
+   
 if __name__ == '__main__':
     app.run(debug=True)
