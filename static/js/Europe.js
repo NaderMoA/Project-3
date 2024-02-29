@@ -85,8 +85,8 @@ d3.json("/Europe3").then(response => {
   const height = 500;
   const radius = Math.min(width, height) / 3;
   const arcPadding = 0.01;
-
-  const totalDeaths = (sortedValues.reduce((a, b) => a + b, 0) * 10 ** -6).toFixed(1);
+  const validValues = sortedValues.filter(value => !isNaN(value));
+  const totalcases = (validValues.reduce((a, b) => a + b, 0) * 10 ** -6).toFixed(1);
 
   let arc = d3.arc()
     .innerRadius(radius * 0.6)
@@ -123,7 +123,7 @@ d3.json("/Europe3").then(response => {
   svg.append("text")
     .attr("text-anchor", "middle")
     .attr("dy", "0.35em")
-    .text(`${totalDeaths}M CASES`)
+    .text(`${totalcases}M CASES`)
     .style("font-size", "20px")
     .style("fill", "black");
 
@@ -187,7 +187,8 @@ d3.json("/Europe2").then(response => {
   const radius = Math.min(width, height) / 3;
   const arcPadding = 0.01;
 
-  const totalDeaths = (sortedValues.reduce((a, b) => a + b, 0) * 10 ** -6).toFixed(1);
+  const validValues = sortedValues.filter(value => !isNaN(value));
+  const totalDeaths = (validValues.reduce((a, b) => a + b, 0) * 10 ** -6).toFixed(1);
 
   let arc = d3.arc()
     .innerRadius(radius * 0.6)
