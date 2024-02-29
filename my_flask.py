@@ -7,11 +7,11 @@ app = Flask(__name__)
 
 # Set your MongoDB URI here directly or retrieve it from environment variables
 # Replace 'your_username', 'your_password', and 'your_database' with your actual credentials
-mongo_uri = 'mongodb+srv://project3:Di3PDviNJJQZih11@cluster0.fvoyrq0.mongodb.net/'
+mongo_uri = 'mongodb+srv://2012ca:2012ca@cluster0.6ajjgta.mongodb.net/'
 
 # app.config["MONGO_URI"] = mongo_uri
 mongo = MongoClient(mongo_uri)
-# print(mongo.list_database_names())
+print(mongo.list_database_names())
 
 # Define endpoint to render the HTML template
 @app.route('/')
