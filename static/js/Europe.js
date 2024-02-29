@@ -1,5 +1,11 @@
 // The Map
+d3.select("#dropdwon").on('change', function () {
+    var dropdownCountry = d3.select("#dropdown").property.VALUE
 
+    CountryMap(dropdownCountry)
+})
+
+function CountryMap(dropdownCountry) {
 // Initialize Leaflet map
 const map = L.map('map').setView([0, 0], 2); // Set initial map view to a specific location and zoom level
 
@@ -14,11 +20,7 @@ fetch("https://gist.githubusercontent.com/NaderMoA/b345d653276912fa6e9a0f2aed6fd
     .then(response => response.json())
     .then(geojsonData => {
         // Fetch data from Flask endpoint
-        fetch("/Europe") // Assuming your Flask route for fetching data is '/Europe'
-            .then(response => response.json())
-            console.log("this is eu data")
-            console.log(response)
-            .then(commonCancerData => {
+        d3.json("/Europe").then(commonCancerData => {
                 // Loop through GeoJSON features
                 geojsonData.features.forEach(feature => {
                     // Extract id from GeoJSON properties
@@ -49,7 +51,8 @@ fetch("https://gist.githubusercontent.com/NaderMoA/b345d653276912fa6e9a0f2aed6fd
             })
             .catch(error => console.error('Error fetching or parsing data from Flask endpoint:', error));
     })
-    .catch(error => console.error('Error fetching or parsing GeoJSON:', error));
+    .catch(error => console.error('Error fetching or parsing GeoJSON:', error))
+}
 
 // Function to get color based on cancer type
 function getCancerColor(cancerType) {

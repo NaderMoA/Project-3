@@ -9,9 +9,10 @@ app = Flask(__name__)
 # Replace 'your_username', 'your_password', and 'your_database' with your actual credentials
 mongo_uri = 'mongodb+srv://project3:Di3PDviNJJQZih11@cluster0.fvoyrq0.mongodb.net/'
 
-app.config["MONGO_URI"] = mongo_uri
+# app.config["MONGO_URI"] = mongo_uri
 mongo = MongoClient(mongo_uri)
-print(mongo.list_database_names())
+# print(mongo.list_database_names())
+
 # Define endpoint to render the HTML template
 @app.route('/')
 def index():
@@ -21,10 +22,9 @@ def index():
 @app.route('/Europe')
 def get_data():
     db = mongo["EU"]
-    common_cancers_male = db['common_cancer_male']
-    print("before the list")
-    data = list(common_cancers_male.find())  # Fetch data from the collection
-    return jsonify(data)
+    common_cancers_male_collection = db["common_cancers_male"]
+    documents = list(common_cancers_male_collection.find({}, {'_id': 0}))  # Excludes the _id field
+    return jsonify(documents)
    
 if __name__ == '__main__':
     app.run(debug=True)

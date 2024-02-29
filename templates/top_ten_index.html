@@ -11,7 +11,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   <script src="https://d3js.org/d3.v7.min.js"></script>
-  <link rel="stylesheet" href="stylesheet.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/stylesheet.css') }}">
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 </head>
 
@@ -25,8 +25,8 @@
   <div id="tooltip" class="tooltip"></div>
   <div id="facts" class="text"></div>
   <div id="map" style="height: 400px;"></div>
-  <script src="top_ten_deadliests.js"></script>
-  <script src="Europe.js"></script>
+  <!-- <script src="{{ url_for('static', filename='js/top_ten_deadliests.js') }}"></script> -->
+  <script src="{{ url_for('static', filename='js/Europe.js') }}"></script>
 
   
 </body>
