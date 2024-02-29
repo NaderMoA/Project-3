@@ -72,7 +72,7 @@ d3.json("/Europe2").then(response => {
     const parsedData = response;
     const filteredData = parsedData.filter(row => row['1.9M DEATHS'] !== undefined && row['1.9M DEATHS'] !== null);
     const values = filteredData.map(row => parseFloat(row['1.9M DEATHS']));
-    const labels = filteredData.map(row => row['Category']);
+    const labels = filteredData.map(row => row['/ufeff/Category/']);
     
     // Combine values and labels into objects for sorting
     const data = values.map((value, index) => ({ value, label: labels[index] }));
@@ -241,7 +241,15 @@ d3.json('Europe2').then(response => {
   const arcPadding = 0.01;
 
   // Calculate total value
-  const totalCases = (sortedValues.reduce((a, b) => a + b, 0) * 10 ** -6).toFixed(1);
+  const totalCases = cases.reduce((total, currentCase) => {
+    // Assuming "VALUE" represents the number of cases for each case
+    const casesValue = parseInt(currentCase.VALUE);
+    return total + casesValue;
+  }, 0);
+
+  // Now you can use totalCases in your chart rendering logic
+  // For example:
+  const totalCasesInMillion = (totalCases * 10 ** -6).toFixed(1);
 
   // Define arc generator
   let arc = d3.arc()
@@ -293,7 +301,7 @@ d3.json('Europe2').then(response => {
   svg.append("text")
     .attr("text-anchor", "middle")
     .attr("dy", "0.35em")
-    .text(`${totalCases}M CASES`)
+    .text(`${totalCasesInMillion}M CASES`)
     .style("font-size", "20px")
     .style("fill", "black");
 
