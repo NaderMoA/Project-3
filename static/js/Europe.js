@@ -69,7 +69,7 @@ function getCancerColor(cancerType) {
 // First Donut Chart
 d3.json("/Europe3").then(response => {
   const parsedData = response;
-  const filteredData = parsedData.filter(row => row['3.9M CASES'] !== undefined && row['3.9M CASES'] !== null);
+  const filteredData = parsedData.filter(row => row['3.9M CASES'] !== undefined && row['3.9M CASES'] !== null && row['Category'] !== 0 && row['Category'] !== '');
   const values = filteredData.map(row => parseFloat(row['3.9M CASES']));
   const labels = filteredData.map(row => row['Category']);
 
@@ -170,7 +170,7 @@ d3.json("/Europe3").then(response => {
 // Second Donut Chart
 d3.json("/Europe2").then(response => {
   const parsedData = response;
-  const filteredData = parsedData.filter(row => row['1.9M DEATHS'] !== undefined && row['1.9M DEATHS'] !== null);
+  const filteredData = parsedData.filter(row => row['1.9M DEATHS'] !== undefined && row['1.9M DEATHS']);
   const values = filteredData.map(row => parseFloat(row['1.9M DEATHS']));
   const labels = filteredData.map(row => row['Category']);
 
@@ -181,7 +181,7 @@ d3.json("/Europe2").then(response => {
   const sortedValues = data.map(item => item.value);
   const sortedLabels = data.map(item => item.label);
 
-  const customColors = ['#22b1b9', '#ccaeea', '#efcb6d', '#036264','#38a2ff', '#f77b1c', '#567e99', '#ffc215'];
+  const customColors = ['#22b1b9', '#ccaeea', '#efcb6d', '#036264','#38a2ff', '#f77b1c', '#567e99', '#ffc215',];
   const width = 700;
   const height = 500;
   const radius = Math.min(width, height) / 3;
@@ -212,9 +212,10 @@ d3.json("/Europe2").then(response => {
     .enter().append("g")
     .attr("class", "arc");
 
-  g.append("path")
+    g.append("path")
     .attr("d", arc)
     .style("fill", (_, i) => customColors[i])
+    .attr("stroke", "none") // Ensure no stroke color
     .on("mouseover", function (event, d) {
       d3.select(this).style("filter", "url(#drop-shadow)");
     })
