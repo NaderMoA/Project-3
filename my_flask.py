@@ -1,5 +1,7 @@
 from flask import Flask, render_template, jsonify
-from flask_pymongo import PyMongo
+#from flask_pymongo import PyMongo
+from pymongo import MongoClient
+from pprint import pprint
 
 app = Flask(__name__)
 
@@ -8,18 +10,21 @@ app = Flask(__name__)
 mongo_uri = 'mongodb+srv://project3:Di3PDviNJJQZih11@cluster0.fvoyrq0.mongodb.net/'
 
 app.config["MONGO_URI"] = mongo_uri
-mongo = PyMongo(app)
-
+mongo = MongoClient(mongo_uri)
+print(mongo.list_database_names())
 # Define endpoint to render the HTML template
 @app.route('/')
 def index():
     return render_template('top_ten_index.html')
 
 # Define endpoint to fetch data from MongoDB and return as JSON
-@app.route('/data')
+@app.route('/Europe')
 def get_data():
-    data_from_mongodb = list(mongo.db.collection.find())
-    return jsonify(data_from_mongodb)
-
+    db = mongo["EU"]
+    common_cancers_male = list(mongo.db.collection.find())
+    #common_cancers_male = db["common_cancers_male"]
+    return jsonify(common_cancers_male)
+    #return jsonify(common_cancers_male)
+    #return jsonify(common_cancers_male)
 if __name__ == '__main__':
     app.run(debug=True)
