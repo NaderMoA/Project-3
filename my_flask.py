@@ -19,12 +19,22 @@ def index():
     return render_template('top_ten_index.html')
 
 # Define endpoint to fetch data from MongoDB and return as JSON
-@app.route('/Europe')
+@app.route('/Male')
 def get_MaleEuMp():
     db = mongo["EU"]
     common_cancers_male_collection = db["common_cancers_male"]
-    documents = list(common_cancers_male_collection.find({}, {'_id': 0}))  # Excludes the _id field
-    return jsonify(documents)
+    
+    male_documents = list(common_cancers_male_collection.find({}, {'_id': 0}))  # Excludes the _id field
+    
+    
+    return jsonify(male_documents)
+        
+@app.route('/Female')   
+def get_FemaleEuMap():
+    db = mongo["EU"]
+    common_cancers_female_collection = db["common_cancers_female"]
+    female_documents = list(common_cancers_female_collection.find({}, {'_id': 0}))
+    return jsonify(female_documents)
 
 @app.route('/Europe2')
 def get_EuDeath():

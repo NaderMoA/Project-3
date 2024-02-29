@@ -1,11 +1,10 @@
 // The Map
-//d3.select("#dropdown").on('change', function () {
-    //var dropdownRegion = d3.select("#dropdown").property.VALUE
+d3.select("#dropdown").on('change', function () {
+  var dropdownRegion = d3.select("#dropdown").property('value');
+  CountryMap(dropdownRegion);
+});
 
-    //CountryMap(dropdownRegion)
-//})
-
-//function CountryMap(dropdownCountry) {
+function CountryMap(dropdownCountry) {
 // Initialize Leaflet map
 const map = L.map('map').setView([0, 0], 2); // Set initial map view to a specific location and zoom level
 
@@ -20,7 +19,7 @@ fetch("https://gist.githubusercontent.com/NaderMoA/b345d653276912fa6e9a0f2aed6fd
     .then(response => response.json())
     .then(geojsonData => {
         // Fetch data from Flask endpoint
-        d3.json("/Europe").then(commonCancerData => {
+        d3.json(`/${dropdownCountry}`).then(commonCancerData => {
                 // Loop through GeoJSON features
                 geojsonData.features.forEach(feature => {
                     // Extract id from GeoJSON properties
@@ -52,15 +51,16 @@ fetch("https://gist.githubusercontent.com/NaderMoA/b345d653276912fa6e9a0f2aed6fd
             .catch(error => console.error('Error fetching or parsing data from Flask endpoint:', error));
     })
     .catch(error => console.error('Error fetching or parsing GeoJSON:', error))
-//}
+  }
 
 // Function to get color based on cancer type
 function getCancerColor(cancerType) {
     // Define color mappings for different cancer types
     const colorMap = {
-        'Lung': '#ff0000', // Red for Lung cancer
-        'Prostate': '#00ff00', // Green for Prostate cancer
-        // Add more mappings as needed
+        'Lung': 'red', // Red for Lung cancer
+        'Prostate': 'green', // Green for Prostate cancer
+        "Breast": "pink",
+        "Colorectum": "yellow"
     };
 
     // Return color from the mapping, or a default color if not found
