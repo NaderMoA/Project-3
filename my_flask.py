@@ -34,7 +34,14 @@ def get_EuDeath():
     
     
     return jsonify(Eu_death_case_data)
-
+@app.route('/Europe3')
+def get_case():
+    db = mongo["EU"]
+    Eu_case= db["new_vs_deaths"]
+    Eu_case_data = list(Eu_case.find({}, {'_id': 0}))  # Excludes the _id field
+    
+    
+    return jsonify(Eu_case_data)
    
 if __name__ == '__main__':
     app.run(debug=True)
