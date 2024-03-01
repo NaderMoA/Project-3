@@ -67,13 +67,15 @@ function getCancerColor(cancerType) {
     };
 
     // Return color from the mapping, or a default color if not found
-    return colorMap[cancerType] || '#000000'; // Default to black if no match found
+    return colorMap[cancerType] || 'grey'; // Default to black if no match found
 }
+// First Donut Chart
 // First Donut Chart
 d3.json("/Europe3").then(response => {
   console.log(response)
   const parsedData = response;
-  const filteredData = parsedData.filter(row => row['CASES'] !== undefined && row['CASES'] !== null && row['Category'] !== 0 && row['Category'] !== '');
+  const filteredData = parsedData.filter(row => 
+    row['CASES'] !== undefined && row['CASES'] !== null && +row['CASES'] !== 0 && row['Category'] !== 0 && row['Category'] !== '');
   const values = filteredData.map(row => parseFloat(row['CASES']));
   const labels = filteredData.map(row => row['Category']);
 
