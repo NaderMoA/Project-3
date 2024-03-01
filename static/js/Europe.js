@@ -43,10 +43,10 @@ fetch("https://gist.githubusercontent.com/NaderMoA/b345d653276912fa6e9a0f2aed6fd
                 L.geoJSON(geojsonData, {
                     style: function(feature) {
                         return {
-                            fillColor: feature.properties.fillColor || '#ffffff', // Default fill color if no match found in fetched data
-                            color: '#000000', // Default border color
+                            fillColor: feature.properties.fillColor , // Default fill color if no match found in fetched data
+                            color: 'white', // Default border color
                             weight: 1, // Default border width
-                            fillOpacity: 0.7 // Default fill opacity
+                            fillOpacity: 1 // Default fill opacity
                         };
                     }
                 }).addTo(map);
@@ -62,7 +62,7 @@ function getCancerColor(cancerType) {
     const colorMap = {
         'Lung': '#22b1b9', // Red for Lung cancer
         'Prostate': '#f4d650', // Green for Prostate cancer
-        "Breast": "#af96cf",
+        "Breast": "pink",
         "Colorectum": "#c50604"
     };
 

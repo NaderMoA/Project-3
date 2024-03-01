@@ -54,6 +54,9 @@ def get_Eucase():
     
     
     return jsonify(Eu_case_data)
+@app.route('/Northamerica')
+def Naindex():
+    return render_template('North_America_index.html')
    
 if __name__ == '__main__':
     app.run(debug=True)
