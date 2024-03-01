@@ -13,10 +13,7 @@ const Esri_WorldGrayCanvas = L.tileLayer('https://server.arcgisonline.com/ArcGIS
 CountryMap("Male")
 function CountryMap(dropdownCountry) {
   console.log(dropdownCountry)
-// Initialize Leaflet map
 
-
-// Fetch GeoJSON data
 fetch("https://gist.githubusercontent.com/NaderMoA/b345d653276912fa6e9a0f2aed6fdb25/raw/426fb47f0a6793776a044f17e66d17cbbf8061ad/countries.geo.json")
     .then(response => response.json())
     .then(geojsonData => {
@@ -69,6 +66,26 @@ function getCancerColor(cancerType) {
     // Return color from the mapping, or a default color if not found
     return colorMap[cancerType] || 'grey'; // Default to black if no match found
 }
+let legend = L.control({ position: 'bottomright' });
+
+legend.onAdd = function() {
+    let div = L.DomUtil.create('div', 'info legend');
+    let cancerName = ["Lung", "Prostate", "Breast", "Colorectum"];
+    let colors = ["#006400", "#66FF33", "#CCFF66", "#FFCC66"];
+    div.style.backgroundColor="#FFFFFF"
+    div.style.padding="10px"
+    div.innerHTML += '<h4>Depth</h4>';
+    // loop through our depth intervals and generate a label with a colored square for each interval
+    for (let i = 0; i < colors.length; i++) {
+        div.innerHTML +=
+            "<i style='background: " + colors[i] + "'>" +"___" +"</i>" + cancerName[i] + '<br>';
+            // "<i style='background: " + colors[i] + "'>" +"___" +"</i>" + grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
+           
+    }
+
+    return div;
+};
+legend.addTo(map);
 // First Donut Chart
 // First Donut Chart
 d3.json("/Europe3").then(response => {
