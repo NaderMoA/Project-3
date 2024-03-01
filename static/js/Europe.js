@@ -10,7 +10,7 @@ const Esri_WorldGrayCanvas = L.tileLayer('https://server.arcgisonline.com/ArcGIS
     attribution: 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ',
     maxZoom: 16
 }).addTo(map);
-CountryMap("Male")
+CountryMap("EuropeMale")
 function CountryMap(dropdownCountry) {
   console.log(dropdownCountry)
 

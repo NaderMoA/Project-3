@@ -16,12 +16,12 @@ print(mongo.list_database_names())
 #print(db.list_collection_names())
 
 # Define endpoint to render the HTML template
-@app.route('/')
+@app.route('/Europe')
 def index():
-    return render_template('top_ten_index.html')
+    return render_template('Eu_index.html')
 
 # Define endpoint to fetch data from MongoDB and return as JSON
-@app.route('/Male')
+@app.route('/EuropeMale')
 def get_MaleEuMp():
     db = mongo["Cancerproject3"]
     common_cancers_male_collection = db["EU_male_map"]
@@ -31,7 +31,7 @@ def get_MaleEuMp():
     
     return jsonify(male_documents)
         
-@app.route('/Female')   
+@app.route('/EuropeFemale')   
 def get_FemaleEuMap():
     db = mongo["Cancerproject3"]
     common_cancers_female_collection = db["EU_female_map"]
