@@ -1,4 +1,4 @@
-d3.json("/Northamerica").then(response => {
+d3.json("/Northamericacase").then(response => {
     console.log(response)
     const parsedData = response;
     const filteredData = parsedData.filter(row => 
@@ -120,7 +120,7 @@ d3.json("/Northamerica").then(response => {
   .catch(error => console.error('Error fetching CSV:', error));
   
   // Second Donut Chart
-  d3.json("/Europe2").then(response => {
+  d3.json("/Northamericadeath").then(response => {
     const parsedData = response;
     const filteredData = parsedData.filter(row => row['DEATHS'] !== undefined && row['DEATHS']);
     const values = filteredData.map(row => parseFloat(row['DEATHS']));

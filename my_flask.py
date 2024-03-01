@@ -57,6 +57,17 @@ def get_Eucase():
 @app.route('/Northamerica')
 def Naindex():
     return render_template('North_America_index.html')
-   
+@app.route('/Northamericacase')
+def Nacase():
+    db = mongo["Northamerica"]
+    na_vase_death_data = db["case_death"]
+    Na_case_death = list(na_vase_death_data.find({}, {'_id': 0}))
+    return jsonify(Na_case_death)  
+@app.route('/Northamericadeath')
+def Nadeath():
+    db = mongo["Northamerica"]
+    na_vase_death_data = db["case_death"]
+    Na_case_death = list(na_vase_death_data.find({}, {'_id': 0}))
+    return jsonify(Na_case_death)  
 if __name__ == '__main__':
     app.run(debug=True)
