@@ -12,6 +12,8 @@ mongo_uri = 'mongodb+srv://2012ca:2012ca@cluster0.6ajjgta.mongodb.net/'
 # app.config["MONGO_URI"] = mongo_uri
 mongo = MongoClient(mongo_uri)
 print(mongo.list_database_names())
+#db = mongo["Cancerproject3"]
+#print(db.list_collection_names())
 
 # Define endpoint to render the HTML template
 @app.route('/')
@@ -21,8 +23,8 @@ def index():
 # Define endpoint to fetch data from MongoDB and return as JSON
 @app.route('/Male')
 def get_MaleEuMp():
-    db = mongo["EU"]
-    common_cancers_male_collection = db["common_cancers_male"]
+    db = mongo["Cancerproject3"]
+    common_cancers_male_collection = db["EU_male_map"]
     
     male_documents = list(common_cancers_male_collection.find({}, {'_id': 0}))  # Excludes the _id field
     
@@ -31,23 +33,23 @@ def get_MaleEuMp():
         
 @app.route('/Female')   
 def get_FemaleEuMap():
-    db = mongo["EU"]
-    common_cancers_female_collection = db["common_cancers_female"]
+    db = mongo["Cancerproject3"]
+    common_cancers_female_collection = db["EU_female_map"]
     female_documents = list(common_cancers_female_collection.find({}, {'_id': 0}))
     return jsonify(female_documents)
 
 @app.route('/Europe2')
 def get_EuDeath():
-    db = mongo["EU"]
-    Eu_death = db["new_vs_deaths"]
+    db = mongo["Cancerproject3"]
+    Eu_death = db["case_death"]
     Eu_death_case_data = list(Eu_death.find({}, {'_id': 0}))  # Excludes the _id field
     
     
     return jsonify(Eu_death_case_data)
 @app.route('/Europe3')
-def get_case():
-    db = mongo["EU"]
-    Eu_case= db["new_vs_deaths"]
+def get_Eucase():
+    db = mongo["Cancerproject3"]
+    Eu_case= db["case_death"]
     Eu_case_data = list(Eu_case.find({}, {'_id': 0}))  # Excludes the _id field
     
     

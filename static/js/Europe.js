@@ -4,7 +4,7 @@ d3.select("#dropdown").on('change', function () {
   CountryMap(dropdownRegion);
 });
 
-function CountryMap(dropdownCountry) {
+//function CountryMap(dropdownCountry) {
 // Initialize Leaflet map
 const map = L.map('map').setView([0, 0], 2); // Set initial map view to a specific location and zoom level
 
@@ -19,7 +19,8 @@ fetch("https://gist.githubusercontent.com/NaderMoA/b345d653276912fa6e9a0f2aed6fd
     .then(response => response.json())
     .then(geojsonData => {
         // Fetch data from Flask endpoint
-        d3.json(`/${dropdownCountry}`).then(commonCancerData => {
+        //`/${dropdownCountry}`
+        d3.json('/Male').then(commonCancerData => {
                 // Loop through GeoJSON features
                 geojsonData.features.forEach(feature => {
                     // Extract id from GeoJSON properties
@@ -51,16 +52,16 @@ fetch("https://gist.githubusercontent.com/NaderMoA/b345d653276912fa6e9a0f2aed6fd
             .catch(error => console.error('Error fetching or parsing data from Flask endpoint:', error));
     })
     .catch(error => console.error('Error fetching or parsing GeoJSON:', error))
-  }
+  //}
 
 // Function to get color based on cancer type
 function getCancerColor(cancerType) {
     // Define color mappings for different cancer types
     const colorMap = {
-        'Lung': 'red', // Red for Lung cancer
-        'Prostate': 'green', // Green for Prostate cancer
-        "Breast": "pink",
-        "Colorectum": "yellow"
+        'Lung': '#22b1b9', // Red for Lung cancer
+        'Prostate': '#f4d650', // Green for Prostate cancer
+        "Breast": "#af96cf",
+        "Colorectum": "#c50604"
     };
 
     // Return color from the mapping, or a default color if not found
@@ -68,9 +69,10 @@ function getCancerColor(cancerType) {
 }
 // First Donut Chart
 d3.json("/Europe3").then(response => {
+  console.log(response)
   const parsedData = response;
-  const filteredData = parsedData.filter(row => row['3.9M CASES'] !== undefined && row['3.9M CASES'] !== null && row['Category'] !== 0 && row['Category'] !== '');
-  const values = filteredData.map(row => parseFloat(row['3.9M CASES']));
+  const filteredData = parsedData.filter(row => row['CASES'] !== undefined && row['CASES'] !== null && row['Category'] !== 0 && row['Category'] !== '');
+  const values = filteredData.map(row => parseFloat(row['CASES']));
   const labels = filteredData.map(row => row['Category']);
 
   const data = values.map((value, index) => ({ value, label: labels[index] }));
@@ -170,8 +172,8 @@ d3.json("/Europe3").then(response => {
 // Second Donut Chart
 d3.json("/Europe2").then(response => {
   const parsedData = response;
-  const filteredData = parsedData.filter(row => row['1.9M DEATHS'] !== undefined && row['1.9M DEATHS']);
-  const values = filteredData.map(row => parseFloat(row['1.9M DEATHS']));
+  const filteredData = parsedData.filter(row => row['DEATHS'] !== undefined && row['DEATHS']);
+  const values = filteredData.map(row => parseFloat(row['DEATHS']));
   const labels = filteredData.map(row => row['Category']);
 
   const data = values.map((value, index) => ({ value, label: labels[index] }));
