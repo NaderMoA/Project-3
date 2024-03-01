@@ -62,12 +62,26 @@ def Nacase():
     db = mongo["Northamerica"]
     na_vase_death_data = db["case_death"]
     Na_case_death = list(na_vase_death_data.find({}, {'_id': 0}))
-    return jsonify(Na_case_death)  
+    return jsonify(Na_case_death) 
+ 
 @app.route('/Northamericadeath')
 def Nadeath():
     db = mongo["Northamerica"]
     na_vase_death_data = db["case_death"]
     Na_case_death = list(na_vase_death_data.find({}, {'_id': 0}))
     return jsonify(Na_case_death)  
+
+@app.route('/Cancer')
+def canndex():
+    return render_template('top_ten_index.html')
+ 
+@app.route('/Cancertop')
+def topten():
+    db = mongo["top_ten_database"]
+    top_ten = db["test2"]
+    top_ten_data = list(top_ten.find({}, {'_id': 0}))
+    return jsonify(top_ten_data)
+
+
 if __name__ == '__main__':
     app.run(debug=True)
