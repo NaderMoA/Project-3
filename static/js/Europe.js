@@ -3,9 +3,6 @@ d3.select("#dropdown").on('change', function () {
   var dropdownRegion = d3.select("#dropdown").property('value');
   CountryMap(dropdownRegion);
 });
-
-//function CountryMap(dropdownCountry) {
-// Initialize Leaflet map
 const map = L.map('map').setView([0, 0], 2); // Set initial map view to a specific location and zoom level
 
 // Add the Esri base layer to the map
@@ -13,6 +10,11 @@ const Esri_WorldGrayCanvas = L.tileLayer('https://server.arcgisonline.com/ArcGIS
     attribution: 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ',
     maxZoom: 16
 }).addTo(map);
+CountryMap("Male")
+function CountryMap(dropdownCountry) {
+  console.log(dropdownCountry)
+// Initialize Leaflet map
+
 
 // Fetch GeoJSON data
 fetch("https://gist.githubusercontent.com/NaderMoA/b345d653276912fa6e9a0f2aed6fdb25/raw/426fb47f0a6793776a044f17e66d17cbbf8061ad/countries.geo.json")
@@ -20,7 +22,7 @@ fetch("https://gist.githubusercontent.com/NaderMoA/b345d653276912fa6e9a0f2aed6fd
     .then(geojsonData => {
         // Fetch data from Flask endpoint
         //`/${dropdownCountry}`
-        d3.json('/Male').then(commonCancerData => {
+        d3.json(`/${dropdownCountry}`).then(commonCancerData => {
                 // Loop through GeoJSON features
                 geojsonData.features.forEach(feature => {
                     // Extract id from GeoJSON properties
@@ -52,7 +54,7 @@ fetch("https://gist.githubusercontent.com/NaderMoA/b345d653276912fa6e9a0f2aed6fd
             .catch(error => console.error('Error fetching or parsing data from Flask endpoint:', error));
     })
     .catch(error => console.error('Error fetching or parsing GeoJSON:', error))
-  //}
+  }
 
 // Function to get color based on cancer type
 function getCancerColor(cancerType) {
@@ -167,7 +169,26 @@ d3.json("/Europe3").then(response => {
   const feMerge = filter.append("feMerge");
   feMerge.append("feMergeNode").attr("in", "offsetBlur");
   feMerge.append("feMergeNode").attr("in", "SourceGraphic");
-});
+// Add legend
+const legend = svg.selectAll(".legend")
+.data(sortedLabels)
+.enter()
+.append("g")
+.attr("class", "legend")
+.attr("transform", (d, i) => `translate(200,${i * 20})`); // Adjust vertical spacing between legend items
+
+legend.append("rect")
+.attr("width", 10)
+.attr("height", 10)
+.attr("fill", (d, i) => customColors[i]);
+
+legend.append("text")
+.text(d => d)
+.style("font-size", 12)
+.attr("y", 10)
+.attr("x", 11)
+})
+.catch(error => console.error('Error fetching CSV:', error));
 
 // Second Donut Chart
 d3.json("/Europe2").then(response => {
@@ -270,4 +291,23 @@ d3.json("/Europe2").then(response => {
   const feMerge = filter.append("feMerge");
   feMerge.append("feMergeNode").attr("in", "offsetBlur");
   feMerge.append("feMergeNode").attr("in", "SourceGraphic");
-});
+// Add legend
+const legend = svg.selectAll(".legend")
+.data(sortedLabels)
+.enter()
+.append("g")
+.attr("class", "legend")
+.attr("transform", (d, i) => `translate(200,${i * 20})`); // Adjust vertical spacing between legend items
+
+legend.append("rect")
+.attr("width", 10)
+.attr("height", 10)
+.attr("fill", (d, i) => customColors[i]);
+
+legend.append("text")
+.text(d => d)
+.style("font-size", 12)
+.attr("y", 10)
+.attr("x", 11)
+})
+.catch(error => console.error('Error fetching CSV:', error));
