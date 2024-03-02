@@ -250,70 +250,60 @@ d3.json("/Northamericacase").then(response => {
       maxZoom: 16
   }).addTo(map);
   
-  // Load GeoJSON data for USA states
-  fetch("https://raw.githubusercontent.com/PublicaMundi/MappingAPI/master/data/geojson/us-states.json")
-      .then(response => response.json())
-      .then(usGeoJSON => {
-          // Create a Leaflet GeoJSON layer for USA states
-          L.geoJSON(usGeoJSON, {
-              style: function (feature) {
-                  // Determine style based on feature properties (density)
-                  const density = feature.properties.density;
-                  return {
-                      fillColor: getColor(density),
-                      weight: 2,
-                      opacity: 1,
-                      color: 'white',
-                      dashArray: '3',
-                      fillOpacity: 0.7
-                  };
-              }
-          }).addTo(map);
-      })
-      .catch(error => console.error('Error loading USA GeoJSON:', error));
+  // Fetch JSON data from Flask route for US state rates
+  d3.json("/Northamericamap").then(response => {
+    console.log(response)
+      
+          // Store the data in a variable accessible to the GeoJSON layer creation function
+          const usStateRates = response;
   
-  // Load GeoJSON data for Canadian provinces
-  fetch("https://raw.githubusercontent.com/codeforgermany/click_that_hood/main/public/data/canada.geojson")
-      .then(response => response.json())
-      .then(canadaGeoJSON => {
-          // Create a Leaflet GeoJSON layer for Canadian provinces
-          L.geoJSON(canadaGeoJSON, {
-              style: function (feature) {
-                  // Determine style based on feature properties (density)
-                  const density = feature.properties._2012_membership;
-                  return {
-                      fillColor: 'gray', // Default color for provinces without data
-                      weight: 2,
-                      opacity: 1,
-                      color: 'white',
-                      dashArray: '3',
-                      fillOpacity: 0.7
-                  };
-              }
-          }).addTo(map);
-      })
-      .catch(error => console.error('Error loading Canadian GeoJSON:', error));
-  
-  // Fetch JSON data from Flask route
-  fetch("/Northamericamap")
-      .then(response => response.json())
-      .then(data => {
-          // Use data from Flask route to determine color based on density value
-          // Adjust this part according to the structure of your Flask JSON data
-          data.forEach(entry => {
-              // Access the density value and assign color accordingly
-              const density = entry.VALUE;
-              // Modify the GeoJSON style or coloring here
-          });
+          // Load GeoJSON data for USA states
+          fetch("https://raw.githubusercontent.com/PublicaMundi/MappingAPI/master/data/geojson/us-states.json")
+              .then(response => response.json())
+              .then(usGeoJSON => {
+                  // Create a Leaflet GeoJSON layer for USA states
+                  L.geoJSON(usGeoJSON, {
+                      style: function (feature) {
+                          // Get state code from feature properties
+                          const stateCode = feature.properties.state_code;
+                          // Find the entry with matching state code
+                          const stateEntry = usStateRates.find(entry => entry.STATE === stateCode);
+                          // If state entry found, parse rate value and set fillColor accordingly
+                          if (stateEntry) {
+                              const rate = parseFloat(stateEntry.RATE);
+                              return {
+                                  fillColor: getColor(rate),
+                                  weight: 2,
+                                  opacity: 1,
+                                  color: 'white',
+                                  dashArray: '3',
+                                  fillOpacity: 0.7
+                              };
+                          } else {
+                              // If no matching entry found, use default style
+                              return {
+                                  fillColor: 'gray',
+                                  weight: 2,
+                                  opacity: 1,
+                                  color: 'white',
+                                  dashArray: '3',
+                                  fillOpacity: 0.7
+                              };
+                          }
+                      }
+                  }).addTo(map); // Add GeoJSON layer to the map
+              })
+              .catch(error => console.error('Error loading USA GeoJSON:', error));
       })
       .catch(error => console.error('Error fetching JSON from Flask:', error));
   
-  // Function to determine color based on density value
-  function getColor(density) {
-      return density > 55.1 ? 'red' :
-             density > 39.6  ? 'pink' :
-             density > 30.2  ? 'green' :
-             density > 25.6  ? 'blue' :
-             density > 22.4  ? 'yellow' :
-                              'gray';
+  // Function to determine color based on Rate value
+  function getColor(rate) {
+      // Define color range based on Rate value
+      return rate >= 170 ? '#800026' :
+             rate >= 160 ? '#BD0026' :
+             rate >= 150 ? '#E31A1C' :
+             rate >= 140 ? '#FC4E2A' :
+             rate >= 130 ? '#FD8D3C' :
+                           '#FEB24C';
   }

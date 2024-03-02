@@ -73,9 +73,26 @@ def Nadeath():
 @app.route('/Northamericamap')
 def Namap():
     db = mongo["Northamerica"]
-    na_map_data = db["na_map"]
+    na_map_data = db["us_rate"]
     Na_map = list(na_map_data.find({}, {'_id': 0}))
     return jsonify(Na_map)
+
+@app.route('/Latin')
+def indexlatin():
+    return render_template('Latin_america_index.html')
+
+@app.route('/Latinmap')
+def latmap():
+    db = mongo["Latin"]
+    lat_map_data = db["latin_map"]
+    Na_map = list(lat_map_data.find({}, {'_id': 0}))
+    return (Na_map)
+@app.route('/Latindeath')
+def latdeath():
+    db = mongo["Latin"]
+    lat_death_data = db["latin_death"]
+    lat_death = list(lat_death_data.find({}, {'_id': 0}))
+    return jsonify(lat_death)
 
 @app.route('/Cancer')
 def canndex():
