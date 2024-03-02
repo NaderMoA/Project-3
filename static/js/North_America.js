@@ -240,3 +240,80 @@ d3.json("/Northamericacase").then(response => {
   .attr("x", 11)
   })
   .catch(error => console.error('Error fetching CSV:', error));
+
+  //The map
+  const map = L.map('map').setView([55, -97], 3); // Set initial map view to center of North America
+
+  // Add the Esri base layer to the map
+  const Esri_WorldGrayCanvas = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
+      attribution: 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ',
+      maxZoom: 16
+  }).addTo(map);
+  
+  // Load GeoJSON data for USA states
+  fetch("https://raw.githubusercontent.com/PublicaMundi/MappingAPI/master/data/geojson/us-states.json")
+      .then(response => response.json())
+      .then(usGeoJSON => {
+          // Create a Leaflet GeoJSON layer for USA states
+          L.geoJSON(usGeoJSON, {
+              style: function (feature) {
+                  // Determine style based on feature properties (density)
+                  const density = feature.properties.density;
+                  return {
+                      fillColor: getColor(density),
+                      weight: 2,
+                      opacity: 1,
+                      color: 'white',
+                      dashArray: '3',
+                      fillOpacity: 0.7
+                  };
+              }
+          }).addTo(map);
+      })
+      .catch(error => console.error('Error loading USA GeoJSON:', error));
+  
+  // Load GeoJSON data for Canadian provinces
+  fetch("https://raw.githubusercontent.com/codeforgermany/click_that_hood/main/public/data/canada.geojson")
+      .then(response => response.json())
+      .then(canadaGeoJSON => {
+          // Create a Leaflet GeoJSON layer for Canadian provinces
+          L.geoJSON(canadaGeoJSON, {
+              style: function (feature) {
+                  // Determine style based on feature properties (density)
+                  const density = feature.properties._2012_membership;
+                  return {
+                      fillColor: 'gray', // Default color for provinces without data
+                      weight: 2,
+                      opacity: 1,
+                      color: 'white',
+                      dashArray: '3',
+                      fillOpacity: 0.7
+                  };
+              }
+          }).addTo(map);
+      })
+      .catch(error => console.error('Error loading Canadian GeoJSON:', error));
+  
+  // Fetch JSON data from Flask route
+  fetch("/Northamericamap")
+      .then(response => response.json())
+      .then(data => {
+          // Use data from Flask route to determine color based on density value
+          // Adjust this part according to the structure of your Flask JSON data
+          data.forEach(entry => {
+              // Access the density value and assign color accordingly
+              const density = entry.VALUE;
+              // Modify the GeoJSON style or coloring here
+          });
+      })
+      .catch(error => console.error('Error fetching JSON from Flask:', error));
+  
+  // Function to determine color based on density value
+  function getColor(density) {
+      return density > 55.1 ? 'red' :
+             density > 39.6  ? 'pink' :
+             density > 30.2  ? 'green' :
+             density > 25.6  ? 'blue' :
+             density > 22.4  ? 'yellow' :
+                              'gray';
+  }

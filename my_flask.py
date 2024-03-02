@@ -70,6 +70,12 @@ def Nadeath():
     na_vase_death_data = db["case_death"]
     Na_case_death = list(na_vase_death_data.find({}, {'_id': 0}))
     return jsonify(Na_case_death)  
+@app.route('/Northamericamap')
+def Namap():
+    db = mongo["Northamerica"]
+    na_map_data = db["na_map"]
+    Na_map = list(na_map_data.find({}, {'_id': 0}))
+    return jsonify(Na_map)
 
 @app.route('/Cancer')
 def canndex():
