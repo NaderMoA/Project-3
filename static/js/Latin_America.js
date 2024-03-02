@@ -35,7 +35,7 @@ fetch("/Latinmap")
                 L.geoJSON(geojsonData, {
                     style: function (feature) {
                         // Extract country code from GeoJSON properties
-                        const countryCode = feature.properties.sov_a3;
+                        const countryCode = feature.properties.iso_a3;
 
                         // Find corresponding data in fetched data
                         const rowData = commonCancerData.find(row => row['ISO_3_CODE'] === countryCode);
