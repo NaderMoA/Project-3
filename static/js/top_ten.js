@@ -15,10 +15,7 @@ fetch("/Cancertop") // Update the route to your Flask endpoint
   }
 
   // Custom pastel colors
-  const customColors = [
-    "#FFD1DC", "#FFB6C1", "#FF69B4", "#FFA07A", "#FF7F50", 
-    "#FFD700", "#FFA500", "#FFE4B5", "#FFC0CB", "#ADD8E6"
-  ];
+  const customColors = ['#e5526f', '#A3D9CF', '#D9BCF2', '#72DBF2', '#efcb6d', '#A0B392','#71B1D9', '#F2C4C4', '#F2A477', '#A9B5D9'];
 
   // Create plotly data
   const plotlyData = [{
@@ -33,7 +30,7 @@ fetch("/Cancertop") // Update the route to your Flask endpoint
   }];
 
   const layout = {
-    title: 'Top Ten Deadliest Cancers and Their Survival Rates',
+    title: 'Top Ten Deadliest Cancers With The Lowest Survival Rates',
     xaxis: {
       title: '5 Year Survival Rate (%)',
       range: [0, 35] // Set the range of x-axis to 0-100
@@ -68,7 +65,7 @@ fetch("/Cancertop") // Update the route to your Flask endpoint
 
   // Animate the chart
   const animationFrames = 100; // Number of animation frames
-  const animationDuration = 2000; // Animation duration in milliseconds
+  const animationDuration = 2700; // Animation duration in milliseconds
   const delayBetweenFrames = animationDuration / animationFrames;
 
   for (let i = 1; i <= animationFrames; i++) {
