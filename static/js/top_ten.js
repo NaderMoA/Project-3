@@ -39,7 +39,11 @@ fetch("/Cancertop") // Update the route to your Flask endpoint
       range: [0, 35] // Set the range of x-axis to 0-100
     },
     yaxis: {
-      title: 'Cancer Type'
+      title: 'Cancer Type',
+      automargin: true, // Adjust the margin automatically
+      margin: { // Set specific margin values if needed
+        l: 150 // Left margin in pixels
+      }
     },
     height: 400,
     width: 800, // Adjust width as needed
