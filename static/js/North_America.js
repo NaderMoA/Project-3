@@ -160,7 +160,7 @@ d3.json("/Northamericacase").then(response => {
     const sortedValues = data.map(item => item.value);
     const sortedLabels = data.map(item => item.label);
   
-    const customColors = ['#22b1b9', '#ccaeea', '#efcb6d', '#036264','#38a2ff', '#f77b1c', '#567e99', '#ffc215',];
+    const customColors = ['#22b1b9', '#ccaeea', '#efcb6d', '#036264','#38a2ff', '#f77b1c', '#567e99', '#FFA6C3'];
     const width = 700;
     const height = 500;
     const radius = Math.min(width, height) / 3;

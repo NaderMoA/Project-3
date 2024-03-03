@@ -57,6 +57,7 @@ def get_Eucase():
 @app.route('/Northamerica')
 def Naindex():
     return render_template('North_America_index.html')
+
 @app.route('/Northamericacase')
 def Nacase():
     db = mongo["Northamerica"]
@@ -93,6 +94,12 @@ def latdeath():
     lat_death_data = db["latin_death"]
     lat_death = list(lat_death_data.find({}, {'_id': 0}))
     return jsonify(lat_death)
+@app.route('/Latincase')
+def latcase():
+    db = mongo["Latin"]
+    lat_case_data = db["Latin_death_case"]
+    lat_case = list(lat_case_data.find({}, {'_id': 0}))
+    return jsonify(lat_case)
 
 @app.route('/Cancer')
 def canndex():
