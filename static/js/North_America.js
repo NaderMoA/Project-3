@@ -1,3 +1,4 @@
+// first Donut Chart
 d3.json("/Northamericacase").then(response => {
     console.log(response)
     const parsedData = response;
