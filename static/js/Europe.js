@@ -87,7 +87,7 @@ legend.onAdd = function() {
 };
 legend.addTo(map);
 // First Donut Chart
-// First Donut Chart
+
 d3.json("/Europe3").then(response => {
   console.log(response)
   const parsedData = response;
@@ -161,13 +161,39 @@ d3.json("/Europe3").then(response => {
     .style("font-size", "12px")
     .style("fill", "black");
 
-  g.on("mouseover", function (event, d) {
-    labelGroup.style("opacity", (_, i) => i === d.index ? 1 : 0);
-    g.style("opacity", (_, i) => i === d.index ? 1 : 0.3);
-  }).on("mouseout", function () {
-    labelGroup.style("opacity", 0);
-    g.style("opacity", 1);
-  });
+    g.on("mouseover", function (event, d) {
+      labelGroup.style("opacity", (_, i) => i === d.index ? 1 : 0);
+      g.style("opacity", (_, i) => i === d.index ? 1 : 0.3);
+      
+      // Append a white background rectangle behind the hovered label
+      labelGroup.filter((_, i) => i === d.index)
+        .each(function() {
+          const bbox = this.getBBox(); // Get bounding box of the label
+          const centroid = arc.centroid(d); // Get centroid of the arc
+          const labelX = centroid[0] - bbox.width / 2 - 5; // Adjust padding as needed
+          const labelY = centroid[1] - bbox.height / 2 - 2; // Adjust padding as needed
+          
+          d3.select(this.parentNode).insert("rect", ":first-child")
+            .attr("class", "label-background")
+            .attr("x", labelX)
+            .attr("y", labelY)
+            .attr("width", bbox.width + 10) // Adjust padding as needed
+            .attr("height", bbox.height + 4)
+            .attr("fill", "white");
+        });
+      
+      // Change fill color of the hovered label text to black
+      labelGroup.filter((_, i) => i === d.index)
+        .style("fill", "black")
+        .style("font-weight", "bold");
+    }).on("mouseout", function () {
+      labelGroup.style("opacity", 0);
+      g.style("opacity", 1);
+      
+      // Remove the background rectangle and reset fill color on mouseout
+      svg.selectAll(".label-background").remove();
+      labelGroup.style("fill", "black");
+    });
 
   const defs = svg.append("defs");
   const filter = defs.append("filter")
@@ -283,13 +309,39 @@ d3.json("/Europe2").then(response => {
     .style("font-size", "12px")
     .style("fill", "black");
 
-  g.on("mouseover", function (event, d) {
-    labelGroup.style("opacity", (_, i) => i === d.index ? 1 : 0);
-    g.style("opacity", (_, i) => i === d.index ? 1 : 0.3);
-  }).on("mouseout", function () {
-    labelGroup.style("opacity", 0);
-    g.style("opacity", 1);
-  });
+    g.on("mouseover", function (event, d) {
+      labelGroup.style("opacity", (_, i) => i === d.index ? 1 : 0);
+      g.style("opacity", (_, i) => i === d.index ? 1 : 0.3);
+      
+      // Append a white background rectangle behind the hovered label
+      labelGroup.filter((_, i) => i === d.index)
+        .each(function() {
+          const bbox = this.getBBox(); // Get bounding box of the label
+          const centroid = arc.centroid(d); // Get centroid of the arc
+          const labelX = centroid[0] - bbox.width / 2 - 5; // Adjust padding as needed
+          const labelY = centroid[1] - bbox.height / 2 - 2; // Adjust padding as needed
+          
+          d3.select(this.parentNode).insert("rect", ":first-child")
+            .attr("class", "label-background")
+            .attr("x", labelX)
+            .attr("y", labelY)
+            .attr("width", bbox.width + 10) // Adjust padding as needed
+            .attr("height", bbox.height + 4)
+            .attr("fill", "white");
+        });
+      
+      // Change fill color of the hovered label text to black
+      labelGroup.filter((_, i) => i === d.index)
+        .style("fill", "black")
+        .style("font-weight", "bold");
+    }).on("mouseout", function () {
+      labelGroup.style("opacity", 0);
+      g.style("opacity", 1);
+      
+      // Remove the background rectangle and reset fill color on mouseout
+      svg.selectAll(".label-background").remove();
+      labelGroup.style("fill", "black");
+    });
 
   const defs = svg.append("defs");
   const filter = defs.append("filter")
