@@ -21,3 +21,45 @@ body {
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
     cursor: pointer;
   } 
+
+  .header {
+    background-color: black; /* Blue background color */
+    color: #fff; /* White text color */
+    padding: 20px 0; /* Add padding to the top and bottom */
+  }
+  
+  .header h1 {
+    font-size: 36px; /* Large font size for the main heading */
+    margin-bottom: 10px; /* Add some space below the heading */
+  }
+  
+  .header h2 {
+    font-size: 24px; /* Smaller font size for the subheading */
+  }
+  
+  /* Body content styles */
+  .body-content {
+    padding: 20px 0; /* Add padding to the top and bottom */
+  }
+  
+  .body-content h3 {
+    font-size: 24px; /* Font size for subheadings in the body content */
+  }
+  
+  .body-content p {
+    font-size: 16px; /* Font size for paragraphs in the body content */
+    line-height: 1.6; /* Increase line height for better readability */
+  }
+  /* Custom button color */
+  .header.btn-custom {
+    background-color: orange; /* Custom color */
+    border-color: #ff7f0e; /* Border color same as background */
+    color: black; /* Text color */
+  }
+  
+  /* Specificity increased for hover effect */
+  .header.btn-custom:hover {
+    background-color: #e65f00; /* Darker shade on hover */
+    border-color: #e65f00;
+    color: #fff;
+  }
