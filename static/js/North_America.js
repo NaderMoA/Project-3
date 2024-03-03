@@ -374,79 +374,86 @@ d3.json("/Northamericalung").then(response => {
       x: years,
       y: usMales,
       mode: 'lines',
-      name: 'US Males'
+      name: 'US Males',
+      line: { color: '#2573a1' } // Custom color for US Males
   };
 
   const trace2 = {
       x: years,
       y: usFemales,
       mode: 'lines',
-      name: 'US Females'
+      name: 'US Females',
+      line: { color: '#ccaeea' } // Custom color for US Females
   };
 
   const trace3 = {
       x: years,
       y: canadaMales,
       mode: 'lines',
-      name: 'Canada Males'
+      name: 'Canada Males',
+      line: { color: '#e5526f' } // Custom color for Canada Males
   };
 
   const trace4 = {
       x: years,
       y: canadaFemales,
       mode: 'lines',
-      name: 'Canada Females'
+      name: 'Canada Females',
+      line: { color: '#22b1b9' } // Custom color for Canada Females
   };
 
   const layout = {
-      title: 'Lung Cancer Trend',
-      xaxis: {
-          title: 'Year'
-      },
-      yaxis: {
-          title: 'Cancer Cases'
-      },
-      updatemenus: [{
-          x: 0.5,
-          y: 0,
-          yanchor: "top",
-          xanchor: "center",
-          showactive: false,
-          direction: "left",
-          type: "buttons",
-          pad: {"t": 87, "r": 10},
-          buttons: [{
-              method: "animate",
-              args: [null, {
-                  fromcurrent: true,
-                  transition: {
-                      duration: 8000,
-                  },
-                  frame: {
-                      duration: 100,
-                      redraw: false
-                  }
-              }],
-              label: "Play"
-          }, {
-              method: "animate",
-              args: [
-                  [null],
-                  {
-                      mode: "immediate",
-                      transition: {
-                          duration: 8000
-                      },
-                      frame: {
-                          duration: 100,
-                          redraw: false
-                      }
-                  }
-              ],
-              label: "Pause"
-          }]
-      }]
-  };
+    title: 'Lung Cancer Trend',
+    xaxis: {
+        title: 'Year'
+    },
+    yaxis: {
+        title: 'Cancer Cases'
+    },
+    hoverlabel: {
+        font: { color: 'white' } // Set the hover text color to white
+    },
+    updatemenus: [{
+        x: 0.5,
+        y: 0,
+        yanchor: "top",
+        xanchor: "center",
+        showactive: false,
+        direction: "left",
+        type: "buttons",
+        pad: {"t": 87, "r": 10},
+        buttons: [{
+            method: "animate",
+            args: [null, {
+                fromcurrent: true,
+                transition: {
+                    duration: 5000, // Adjust the duration to make the animation smoother
+                },
+                frame: {
+                    duration: 150,
+                    redraw: false
+                }
+            }],
+            label: "Play"
+        }, {
+            method: "animate",
+            args: [
+                [null],
+                {
+                    mode: "immediate",
+                    transition: {
+                        duration: 5000 // Adjust the duration to make the animation smoother
+                    },
+                    frame: {
+                        duration: 10,
+                        redraw: false
+                    }
+                }
+            ],
+            label: "Pause"
+        }]
+    }]
+};
 
   const chartData = [trace1, trace2, trace3, trace4];
   
