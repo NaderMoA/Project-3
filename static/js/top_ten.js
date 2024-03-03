@@ -43,6 +43,14 @@ fetch("/Cancertop") // Update the route to your Flask endpoint
       automargin: true, // Adjust the margin automatically
       margin: { // Set specific margin values if needed
         l: 150 // Left margin in pixels
+      },
+      titlefont: {
+        size: 16, // Adjust the font size of the y-axis title
+        color: 'black', // Set the color of the y-axis title
+        // Adjust the margin between the title and the axis
+        margin: { 
+          b: 20 // Bottom margin in pixels
+        }
       }
     },
     height: 400,
