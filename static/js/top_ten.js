@@ -8,6 +8,12 @@ fetch("/Cancertop") // Update the route to your Flask endpoint
   const deadliestCancers = jsonData.map(entry => entry['Deadliest Cancers']);
   const survivalRates = jsonData.map(entry => entry['Survival Rate']); // Update column name without "%"
 
+  // Ensure "Brain cancer" is included in the deadliestCancers array
+  if (!deadliestCancers.includes("Brain cancer")) {
+    deadliestCancers.push("Brain cancer");
+    survivalRates.push(0); // Add a dummy value for Brain cancer
+  }
+
   // Custom pastel colors
   const customColors = [
     "#FFD1DC", "#FFB6C1", "#FF69B4", "#FFA07A", "#FF7F50", 
@@ -16,7 +22,7 @@ fetch("/Cancertop") // Update the route to your Flask endpoint
 
   // Create plotly data
   const plotlyData = [{
-    x: survivalRates,
+    x: survivalRates.map(rate => 0), // Initial values set to 0 for animation
     y: deadliestCancers,
     type: 'bar',
     orientation: 'h',
@@ -48,21 +54,17 @@ fetch("/Cancertop") // Update the route to your Flask endpoint
   // Plot the chart
   Plotly.newPlot('horizontal_bar_chart', plotlyData, layout, config);
 
-  // Animate the chart by updating the x-values
-  setTimeout(() => {
-    Plotly.animate('horizontal_bar_chart', {
-      data: [{ x: survivalRates }] // Update x-values to actual survival rates
-    }, {
-      transition: {
-        duration: 3000, // Animation duration in milliseconds
-        easing: 'cubic-in-out' // Easing function
-      },
-      frame: {
-        duration: 5000, // Time spent on each frame in milliseconds
-        redraw: true // Redraw the chart on each frame
-      }
-    });
-  }, 200); // Start the animation after 2 seconds
+  // Animate the chart
+  const animationFrames = 100; // Number of animation frames
+  const animationDuration = 2000; // Animation duration in milliseconds
+  const delayBetweenFrames = animationDuration / animationFrames;
+
+  for (let i = 1; i <= animationFrames; i++) {
+    setTimeout(() => {
+      const updatedData = [{ x: survivalRates.map((rate, index) => rate * (i / animationFrames)) }];
+      Plotly.restyle('horizontal_bar_chart', 'x', [updatedData[0].x]);
+    }, i * delayBetweenFrames);
+  }
 
   // defining click event
   document.getElementById('horizontal_bar_chart').on('plotly_click', function(data) {
