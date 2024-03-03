@@ -360,3 +360,112 @@ d3.json("/Northamericacase").then(response => {
              rate >= 130 ? '#FD8D3C' :
                            '#FEB24C';
   }
+// Lung Trend chart
+d3.json("/Northamericalung").then(response => {
+  const data = response;
+  
+  const years = data.map(entry => entry.Category);
+  const usMales = data.map(entry => entry['US males']);
+  const usFemales = data.map(entry => entry['US females']);
+  const canadaMales = data.map(entry => entry['Canada males']);
+  const canadaFemales = data.map(entry => entry['Canada females']);
+
+  const trace1 = {
+      x: years,
+      y: usMales,
+      mode: 'lines',
+      name: 'US Males'
+  };
+
+  const trace2 = {
+      x: years,
+      y: usFemales,
+      mode: 'lines',
+      name: 'US Females'
+  };
+
+  const trace3 = {
+      x: years,
+      y: canadaMales,
+      mode: 'lines',
+      name: 'Canada Males'
+  };
+
+  const trace4 = {
+      x: years,
+      y: canadaFemales,
+      mode: 'lines',
+      name: 'Canada Females'
+  };
+
+  const layout = {
+      title: 'Lung Cancer Trend',
+      xaxis: {
+          title: 'Year'
+      },
+      yaxis: {
+          title: 'Cancer Cases'
+      },
+      updatemenus: [{
+          x: 0.5,
+          y: 0,
+          yanchor: "top",
+          xanchor: "center",
+          showactive: false,
+          direction: "left",
+          type: "buttons",
+          pad: {"t": 87, "r": 10},
+          buttons: [{
+              method: "animate",
+              args: [null, {
+                  fromcurrent: true,
+                  transition: {
+                      duration: 8000,
+                  },
+                  frame: {
+                      duration: 100,
+                      redraw: false
+                  }
+              }],
+              label: "Play"
+          }, {
+              method: "animate",
+              args: [
+                  [null],
+                  {
+                      mode: "immediate",
+                      transition: {
+                          duration: 8000
+                      },
+                      frame: {
+                          duration: 100,
+                          redraw: false
+                      }
+                  }
+              ],
+              label: "Pause"
+          }]
+      }]
+  };
+
+  const chartData = [trace1, trace2, trace3, trace4];
+  
+  // Define frames
+  const frames = [];
+  const n = years.length;
+  for (let i = 0; i < n; i++) {
+      frames[i] = {
+          name: `frame-${i}`,
+          data: [
+              { x: years.slice(0, i + 1), y: usMales.slice(0, i + 1) },
+              { x: years.slice(0, i + 1), y: usFemales.slice(0, i + 1) },
+              { x: years.slice(0, i + 1), y: canadaMales.slice(0, i + 1) },
+              { x: years.slice(0, i + 1), y: canadaFemales.slice(0, i + 1) }
+          ]
+      };
+  }
+
+  Plotly.newPlot('trend', chartData, layout).then(function() {
+      Plotly.addFrames('trend', frames);
+  });
+}).catch(error => console.error('Error fetching JSON:', error));

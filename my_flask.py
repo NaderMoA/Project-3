@@ -78,6 +78,13 @@ def Namap():
     Na_map = list(na_map_data.find({}, {'_id': 0}))
     return jsonify(Na_map)
 
+@app.route('/Northamericalung')
+def Nalung():
+    db = mongo["Northamerica"]
+    na_lung_data = db["Na_lung_trend"]
+    Na_lung = list(na_lung_data.find({}, {'_id': 0}))
+    return jsonify(Na_lung)
+
 @app.route('/Latin')
 def indexlatin():
     return render_template('Latin_america_index.html')
