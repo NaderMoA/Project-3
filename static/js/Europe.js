@@ -384,6 +384,75 @@ legend.append("text")
 .catch(error => console.error('Error fetching CSV:', error));
 
 
+// Life Time Risk
+d3.json('/Europerisk').then(function(responseData) {
+  // Process the response data
+  const categories = responseData.map(entry => entry.Category);
+  const malesData = responseData.map(entry => entry.Males);
+  const femalesData = responseData.map(entry => entry.Females);
+
+  // Custom tick format function for the x-axis
+  function formatXAxisTick(value) {
+      // Remove "-" sign from the tick label
+      return Math.abs(value); // Take the absolute value to remove the "-"
+  }
+
+  // Prepare data for the chart
+  const trace1 = {
+      x: malesData,
+      y: categories,
+      name: 'Males',
+      type: 'bar',
+      orientation: 'h', // Horizontal bar chart
+      hoverinfo: 'x+name+y', // Customize hover-over text
+      marker: {
+          color: 'rgba(255, 99, 132, 0.6)', // Red color for males
+          line: {
+              color: 'rgba(255, 99, 132, 1)', // Red border color for males
+              width: 0.5 // Border width
+          }
+      }
+  };
+
+  const trace2 = {
+      x: femalesData,
+      y: categories,
+      name: 'Females',
+      type: 'bar',
+      orientation: 'h', // Horizontal bar chart
+      hoverinfo: 'x+name+y', // Customize hover-over text
+      marker: {
+          color: 'rgba(54, 162, 235, 0.6)', // Blue color for females
+          line: {
+              color: 'rgba(54, 162, 235, 1)', // Blue border color for females
+              width: 0.5 // Border width
+          }
+      }
+  };
+
+  const layout = {
+      title: 'Lifetime Risk by Country',
+      xaxis: {
+          title: 'Lifetime Risk (%)',
+          tickformat: formatXAxisTick
+      },
+      yaxis: {
+          title: 'Country'
+      },
+      barmode: 'relative', // Relative bar mode
+      height: 600
+  };
+
+  const data = [trace1, trace2];
+
+  // Plot the chart
+  Plotly.newPlot('plot', data, layout);
+}).catch(function(error) {
+  console.error('Error fetching data:', error);
+});
+
+
+
 // Get the current URL path
 const currentPath = window.location.pathname;
 

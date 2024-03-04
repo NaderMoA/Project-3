@@ -55,9 +55,18 @@ def get_Eucase():
     db = mongo["Cancerproject3"]
     Eu_case= db["case_death"]
     Eu_case_data = list(Eu_case.find({}, {'_id': 0}))  # Excludes the _id field
-    
-    
+
     return jsonify(Eu_case_data)
+
+@app.route('/Europerisk')
+def get_Eurisk():
+    db = mongo["Cancerproject3"]
+    Eu_risk= db["Eu_lifetime_risk"]
+    Eu_risk_data = list(Eu_risk.find({}, {'_id': 0}))  # Excludes the _id field
+
+    return jsonify(Eu_risk_data)
+
+
 @app.route('/Northamerica')
 def Naindex():
     return render_template('North_America_index.html')
