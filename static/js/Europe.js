@@ -3,7 +3,7 @@ d3.select("#dropdown").on('change', function () {
   var dropdownRegion = d3.select("#dropdown").property('value');
   CountryMap(dropdownRegion);
 });
-const map = L.map('map').setView([0, 0], 2); // Set initial map view to a specific location and zoom level
+const map = L.map('map').setView([51, 15], 3); // Set initial map view to a specific location and zoom level
 
 // Add the Esri base layer to the map
 const Esri_WorldGrayCanvas = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}', {

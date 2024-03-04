@@ -363,3 +363,80 @@ fetch("/Latinmap")
             .catch(error => console.error('Error fetching or parsing data from Flask endpoint:', error));
     })
     .catch(error => console.error('Error fetching or parsing GeoJSON:', error));
+
+
+
+// Latin America incident and mortality    
+d3.json('/Latinincidents').then(function(responseData) {
+  // Extracting data
+  const categories = responseData.map(entry => entry.Category);
+  const incidences = responseData.map(entry => entry.Incidence);
+  const mortalities = responseData.map(entry => entry.Mortality);
+
+  // Create trace for Incidence
+  const trace1 = {
+    x: incidences,
+    y: categories,
+    name: 'Incidence',
+    orientation: 'h',
+    type: 'bar',
+    marker: {
+      color: '#365359', // Color for Incidence bars
+      line: {
+        color: '#365359', // Border color for Incidence bars
+        width: 1
+      }
+    }
+  };
+
+  // Create trace for Mortality
+  const trace2 = {
+    x: mortalities,
+    y: categories,
+    name: 'Mortality',
+    orientation: 'h',
+    type: 'bar',
+    marker: {
+      color: '#A3D9CF', // Color for Mortality bars
+      line: {
+        color: '#A3D9CF', // Border color for Mortality bars
+        width: 1
+      }
+    }
+  };
+
+  const layout = {
+    title: 'Incidence and Mortality by Category',
+    xaxis: {
+      title: 'ASP (World) per 100,000'
+    },
+    yaxis: {
+      title: 'Category'
+    },
+    barmode: 'group', // Group bars by category
+    bargap: 0.5,
+    height: 700,
+    width: 800
+  };
+
+  const data = [trace1, trace2];
+
+  // Plot the chart
+  Plotly.newPlot('plot', data, layout);
+}).catch(function(error) {
+  console.error('Error fetching data:', error);
+});
+
+// Get the current URL path
+const currentPath = window.location.pathname;
+
+// Get all the buttons in the header
+const buttons = document.querySelectorAll('.header .btn');
+
+// Loop through each button to check if its href matches the current path
+buttons.forEach(button => {
+  if (button.getAttribute('href') === currentPath) {
+    // Add the 'active' class to the button if it matches the current path
+    button.classList.add('active');
+  }
+});    

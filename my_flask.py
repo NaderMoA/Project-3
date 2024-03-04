@@ -121,6 +121,14 @@ def latcase():
     lat_case = list(lat_case_data.find({}, {'_id': 0}))
     return jsonify(lat_case)
 
+@app.route('/Latinincidents')
+def latincidents():
+    db = mongo["Latin"]
+    lat_incident_data = db["Latin_incidents"]
+    lat_incident = list(lat_incident_data.find({}, {'_id': 0}))
+    return jsonify(lat_incident)
+
+
 @app.route('/Cancer')
 def canndex():
     return render_template('top_ten_index.html')
