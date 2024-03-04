@@ -16,6 +16,10 @@ print(mongo.list_database_names())
 #print(db.list_collection_names())
 
 # Define endpoint to render the HTML template
+@app.route('/')
+def welcome():
+    return render_template('welcome_page_index.html')
+
 @app.route('/Europe')
 def index():
     return render_template('Eu_index.html')
