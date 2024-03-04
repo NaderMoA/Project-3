@@ -391,20 +391,19 @@ d3.json('/Europerisk').then(function(responseData) {
   const malesData = responseData.map(entry => entry.Males);
   const femalesData = responseData.map(entry => entry.Females);
 
-  // Custom tick format function for the x-axis
-  function formatXAxisTick(value) {
-      // Remove "-" sign from the tick label
-      return Math.abs(value); // Take the absolute value to remove the "-"
-  }
-
   // Prepare data for the chart
   const trace1 = {
-      x: malesData,
+      x: malesData.map(val => -val), // Use malesData directly for x-axis positions
       y: categories,
       name: 'Males',
       type: 'bar',
       orientation: 'h', // Horizontal bar chart
-      hoverinfo: 'x+name+y', // Customize hover-over text
+      hoverinfo: `y+name+${malesData}`, // Customize hover-over text
+      hoverlabel: { // Customize hover label
+          namelength: -1, // Show full name of the trace
+          bordercolor: 'rgba(255, 99, 132, 1)' // Red border color for males
+      },
+      text: malesData.map(val => Math.abs(val)), // Display absolute values in hover text
       marker: {
           color: 'rgba(255, 99, 132, 0.6)', // Red color for males
           line: {
@@ -420,7 +419,11 @@ d3.json('/Europerisk').then(function(responseData) {
       name: 'Females',
       type: 'bar',
       orientation: 'h', // Horizontal bar chart
-      hoverinfo: 'x+name+y', // Customize hover-over text
+      hoverinfo: 'y+name+x', // Customize hover-over text
+      hoverlabel: { // Customize hover label
+          namelength: -1, // Show full name of the trace
+          bordercolor: 'rgba(54, 162, 235, 1)' // Blue border color for females
+      },
       marker: {
           color: 'rgba(54, 162, 235, 0.6)', // Blue color for females
           line: {
@@ -434,7 +437,9 @@ d3.json('/Europerisk').then(function(responseData) {
       title: 'Lifetime Risk by Country',
       xaxis: {
           title: 'Lifetime Risk (%)',
-          tickformat: formatXAxisTick
+          tickvals: [-50, -40, -30, -20, -10, 0, 10, 20, 30, 40, 50], // Sample tick values for demonstration
+          ticktext: [50, 40, 30, 20, 10, 0, 10, 20, 30, 40, 50].map(val => Math.abs(val)), // Remove "-" sign from tick labels
+          zeroline: false // Hide zero line
       },
       yaxis: {
           title: 'Country'
@@ -450,7 +455,6 @@ d3.json('/Europerisk').then(function(responseData) {
 }).catch(function(error) {
   console.error('Error fetching data:', error);
 });
-
 
 
 // Get the current URL path

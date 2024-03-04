@@ -61,7 +61,7 @@ def get_Eucase():
 @app.route('/Europerisk')
 def get_Eurisk():
     db = mongo["Cancerproject3"]
-    Eu_risk= db["Eu_lifetime_risk"]
+    Eu_risk= db["new_eu_lifetime"]
     Eu_risk_data = list(Eu_risk.find({}, {'_id': 0}))  # Excludes the _id field
 
     return jsonify(Eu_risk_data)
