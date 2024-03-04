@@ -74,7 +74,7 @@ legend.onAdd = function() {
     let colors = ["#22b1b9", "#f4d650", "pink", "#c50604"];
     div.style.backgroundColor="#FFFFFF"
     div.style.padding="10px"
-    div.innerHTML += '<h4>Depth</h4>';
+    div.innerHTML += '<p>Cancer</p>';
     // loop through our depth intervals and generate a label with a colored square for each interval
     for (let i = 0; i < colors.length; i++) {
         div.innerHTML +=
@@ -393,45 +393,45 @@ d3.json('/Europerisk').then(function(responseData) {
 
   // Prepare data for the chart
   const trace1 = {
-      x: malesData.map(val => -val), // Use malesData directly for x-axis positions
-      y: categories,
-      name: 'Males',
-      type: 'bar',
-      orientation: 'h', // Horizontal bar chart
-      hoverinfo: `y+name+${malesData}`, // Customize hover-over text
-      hoverlabel: { // Customize hover label
-          namelength: -1, // Show full name of the trace
-          bordercolor: 'rgba(255, 99, 132, 1)' // Red border color for males
-      },
-      text: malesData.map(val => Math.abs(val)), // Display absolute values in hover text
-      marker: {
-          color: 'rgba(255, 99, 132, 0.6)', // Red color for males
-          line: {
-              color: 'rgba(255, 99, 132, 1)', // Red border color for males
-              width: 0.5 // Border width
-          }
-      }
-  };
+    x: malesData.map(val => -val), // Use malesData directly for x-axis positions
+    y: categories,
+    name: 'Males',
+    type: 'bar',
+    orientation: 'h', // Horizontal bar chart
+    hoverinfo: `y+name+x`, // Customize hover-over text
+    hoverlabel: { // Customize hover label
+        namelength: -1, // Show full name of the trace
+        bordercolor: 'black' // Red border color for males
+    },
+    
+    marker: {
+        color: '#acddbf', // Red color for males
+        line: {
+            color: '#acddbf', // Red border color for males
+            width: 0.1 // Adjust the width of the line bars here
+        }
+    }
+};
 
-  const trace2 = {
-      x: femalesData,
-      y: categories,
-      name: 'Females',
-      type: 'bar',
-      orientation: 'h', // Horizontal bar chart
-      hoverinfo: 'y+name+x', // Customize hover-over text
-      hoverlabel: { // Customize hover label
-          namelength: -1, // Show full name of the trace
-          bordercolor: 'rgba(54, 162, 235, 1)' // Blue border color for females
-      },
-      marker: {
-          color: 'rgba(54, 162, 235, 0.6)', // Blue color for females
-          line: {
-              color: 'rgba(54, 162, 235, 1)', // Blue border color for females
-              width: 0.5 // Border width
-          }
-      }
-  };
+const trace2 = {
+    x: femalesData,
+    y: categories,
+    name: 'Females',
+    type: 'bar',
+    orientation: 'h', // Horizontal bar chart
+    hoverinfo: 'y+name+x', // Customize hover-over text
+    hoverlabel: { // Customize hover label
+        namelength: -1, // Show full name of the trace
+        bordercolor: 'black' // Blue border color for females
+    },
+    marker: {
+        color: '#af96cf', // Blue color for females
+        line: {
+            color: '#af96cf', // Blue border color for females
+            width: 0.1 // Adjust the width of the line bars here
+        }
+    }
+};
 
   const layout = {
       title: 'Lifetime Risk by Country',
