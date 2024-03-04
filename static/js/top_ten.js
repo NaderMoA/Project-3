@@ -135,3 +135,18 @@ fetch("/Cancertop") // Update the route to your Flask endpoint
 
 })
 .catch(error => console.error('Error fetching JSON:', error));
+
+
+// Get the current URL path
+const currentPath = window.location.pathname;
+
+// Get all the buttons in the header
+const buttons = document.querySelectorAll('.header .btn');
+
+// Loop through each button to check if its href matches the current path
+buttons.forEach(button => {
+  if (button.getAttribute('href') === currentPath) {
+    // Add the 'active' class to the button if it matches the current path
+    button.classList.add('active');
+  }
+});

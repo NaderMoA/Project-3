@@ -63,3 +63,32 @@ body {
     border-color: #e65f00;
     color: #fff;
   }
+
+  /* Global button styles */
+.btn {
+  display: inline-block;
+  padding: 5px 20px;
+  margin: 0 10px;
+  border: none;
+  border-radius: 5px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.btn-primary {
+  background-color: #9575cd;
+  color: black;
+}
+
+/* Active button style */
+.btn.active {
+  background-color: orange;
+  color: black;
+}
+
+/* Hover effect for all buttons */
+.btn:hover {
+  background-color: orange;
+  color: black;
+}
