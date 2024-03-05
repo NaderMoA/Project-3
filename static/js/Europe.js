@@ -441,11 +441,10 @@ const trace2 = {
           ticktext: [50, 40, 30, 20, 10, 0, 10, 20, 30, 40, 50].map(val => Math.abs(val)), // Remove "-" sign from tick labels
           zeroline: false // Hide zero line
       },
-      yaxis: {
-          title: 'Country'
-      },
+      
       barmode: 'relative', // Relative bar mode
-      height: 600
+      height: 600,
+      width: 1200,
   };
 
   const data = [trace1, trace2];

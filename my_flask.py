@@ -94,7 +94,7 @@ def Namap():
 @app.route('/Northamericalung')
 def Nalung():
     db = mongo["Northamerica"]
-    na_lung_data = db["Na_lung_trend"]
+    na_lung_data = db["full_lung_trend"]
     Na_lung = list(na_lung_data.find({}, {'_id': 0}))
     return jsonify(Na_lung)
 

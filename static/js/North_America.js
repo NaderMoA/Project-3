@@ -362,71 +362,58 @@ d3.json("/Northamericacase").then(response => {
   // Function to determine color based on Rate value
 
 // Lung Trend chart
-d3.json('/Northamericalung')
-    .then(data2 => {
-        // Extract data
-        let categories = [];
-        let usMales = [];
-        let usFemales = [];
-        let canadaMales = [];
-        let canadaFemales = [];
+fetch('/Northamericalung')
+    .then(response => response.json())
+    .then(data => {
+        // Extract categories and columns
+        const categories = data.map(entry => entry.Category);
+        const usMales = data.map(entry => entry['US males']);
+        const usFemales = data.map(entry => entry['US females']);
+        const canadaMales = data.map(entry => entry['Canada males']);
+        const canadaFemales = data.map(entry => entry['Canada females']);
 
-        data2.forEach(entry => {
-            categories.push(entry.Category);
-            usMales.push(entry['US males']);
-            usFemales.push(entry['US females']);
-            canadaMales.push(entry['Canada males']);
-            canadaFemales.push(entry['Canada females']);
-        });
-
-        // Create traces for each category
-        let traceUsMales = {
-            x: categories,
-            y: usMales,
-            mode: 'lines',
-            name: 'US Males'
-        };
-
-        let traceUsFemales = {
-            x: categories,
-            y: usFemales,
-            mode: 'lines',
-            name: 'US Females'
-        };
-
-        let traceCanadaMales = {
-            x: categories,
-            y: canadaMales,
-            mode: 'lines',
-            name: 'Canada Males'
-        };
-
-        let traceCanadaFemales = {
-            x: categories,
-            y: canadaFemales,
-            mode: 'lines',
-            name: 'Canada Females'
-        };
-
-        // Define layout
-        let layout = {
-            title: 'Lung Data by Category',
-            xaxis: {
-                title: 'Category'
+        // Create a Chart.js chart
+        const ctx = document.getElementById('myChart').getContext('2d');
+        const myChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: categories,
+                datasets: [{
+                    label: 'US Males',
+                    data: usMales,
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    borderWidth: 1
+                }, {
+                    label: 'US Females',
+                    data: usFemales,
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderWidth: 1
+                }, {
+                    label: 'Canada Males',
+                    data: canadaMales,
+                    borderColor: 'rgba(255, 206, 86, 1)',
+                    backgroundColor: 'rgba(255, 206, 86, 0.2)',
+                    borderWidth: 1
+                }, {
+                    label: 'Canada Females',
+                    data: canadaFemales,
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderWidth: 1
+                }]
             },
-            yaxis: {
-                title: 'Count'
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
             }
-        };
-
-        // Combine traces into data list
-        let plotlyData = [traceUsMales, traceUsFemales, traceCanadaMales, traceCanadaFemales];
-
-        // Plot the chart
-        Plotly.newPlot('trend', plotlyData, layout);
+        });
     })
     .catch(error => console.error('Error fetching data:', error));
-
 
 
 // Get the current URL path
