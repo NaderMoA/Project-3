@@ -146,6 +146,9 @@ d3.json("/Latincase").then(response => {
   })
   .catch(error => console.error('Error fetching CSV:', error));
   
+  
+  
+  /////////////////////////////////////////////////////////////////////////////////////
   // Second Donut Chart
   d3.json("/Latincase").then(response => {
     const parsedData = response;
@@ -294,26 +297,30 @@ d3.json("/Latincase").then(response => {
   })
   .catch(error => console.error('Error fetching CSV:', error));
 
+///////////////////////////////////////////////////////////////////////////////////////////
+
+
+
 // The map
-const map = L.map('map').setView([4, -75], 3); // Set initial map view to center around Costa Rica
+const map = L.map('map').setView([-8, -75], 3); // Set initial map view to center around Costa Rica
 
 // Add the Esri base layer to the map
 const Esri_WorldGrayCanvas = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
     attribution: 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ',
-    maxZoom: 10
+    maxZoom: 16
 }).addTo(map);
 
 // Function to get color based on cancer type
 function getCancerColor(cancerType) {
     // Define color mappings for different cancer types
     const colorMap = {
-        'Lung': '#22b1b9', // Lung cancer
-        'Prostate': '#f4d650', // Prostate cancer
-        'Colorectum': '#c50604', // Colorectum cancer
-        'Stomach': '#1fda9a', // Stomach cancer
-        'Liver': '#e59e20', // Liver cancer
-        'Gallbladder': '#7d3eb5', // Gallbladder cancer
-        'Cervix': '#ed34ac' // Cervix cancer
+        'Lung': '#f4d650', // Lung cancer
+        'Prostate': '#38a2ff', // Prostate cancer
+        'Colorectum': '#acddbf', // Colorectum cancer
+        'Stomach': '#ff683b', // Stomach cancer
+        'Liver': '#af96cf', // Liver cancer
+        'Gallbladder': '#2f3f58', // Gallbladder cancer
+        'Cervix': '#c50604' // Cervix cancer
     };
 
     // Return color from the mapping, or null if not found
@@ -363,8 +370,28 @@ fetch("/Latinmap")
             .catch(error => console.error('Error fetching or parsing data from Flask endpoint:', error));
     })
     .catch(error => console.error('Error fetching or parsing GeoJSON:', error));
+    let legend = L.control({ position: 'bottomright' });
 
+    legend.onAdd = function() {
+        let div = L.DomUtil.create('div', 'info legend');
+        let cancerName = ["Lung", "Prostate", "Colorectum", "Stomach", "Liver", "Gallbladder", "Cervix"];
+        let colors = ["#f4d650", "#38a2ff", "#acddbf", "#ff683b", "#af96cf", "#2f3f58", "#c50604"];
+        div.style.backgroundColor="#FFFFFF"
+        div.style.padding="10px"
+        div.innerHTML += '<p>Cancer</p>';
+        // loop through our depth intervals and generate a label with a colored square for each interval
+        for (let i = 0; i < colors.length; i++) {
+            div.innerHTML +=
+                "<i style='background: " + colors[i] + "'>" +"___" +"</i>" + cancerName[i] + '<br>';
+                // "<i style='background: " + colors[i] + "'>" +"___" +"</i>" + grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
+               
+        }
+    
+        return div;
+    };
+    legend.addTo(map);
 
+/////////////////////////////////////////////////////////////////////////////////////////
 
 // Latin America incident and mortality    
 d3.json('/Latinincidents').then(function(responseData) {
@@ -442,6 +469,8 @@ d3.json('/Latinincidents').then(function(responseData) {
   console.error('Error fetching data:', error);
 });
 
+
+///////////////////////////////////////////////////////////////////////////
 // Get the current URL path
 const currentPath = window.location.pathname;
 

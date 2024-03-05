@@ -86,6 +86,8 @@ legend.onAdd = function() {
     return div;
 };
 legend.addTo(map);
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // First Donut Chart
 
 d3.json("/Europe3").then(response => {
@@ -235,6 +237,8 @@ legend.append("text")
 })
 .catch(error => console.error('Error fetching CSV:', error));
 
+///////////////////////////////////////////////////////////////////////////////////////////////
+
 // Second Donut Chart
 d3.json("/Europe2").then(response => {
   const parsedData = response;
@@ -383,6 +387,7 @@ legend.append("text")
 })
 .catch(error => console.error('Error fetching CSV:', error));
 
+////////////////////////////////////////////////////////////////////////////////////////////
 
 // Life Time Risk
 d3.json('/Europerisk').then(function(responseData) {
@@ -455,7 +460,7 @@ const trace2 = {
   console.error('Error fetching data:', error);
 });
 
-
+/////////////////////////////////////////////////////////////////////////
 // Get the current URL path
 const currentPath = window.location.pathname;
 
