@@ -386,6 +386,12 @@ d3.json('/Latinincidents').then(function(responseData) {
         color: '#365359', // Border color for Incidence bars
         width: 1
       }
+    },
+    hoverinfo: 'x+y', // Show x and y values on hover
+    hoverlabel: {
+      bgcolor: '#365359', // Hover box background color for Incidence bars
+      bordercolor: '#365359', // Hover box border color for Incidence bars
+      font: { color: 'white' } // Font color for hover text
     }
   };
 
@@ -402,6 +408,12 @@ d3.json('/Latinincidents').then(function(responseData) {
         color: '#A3D9CF', // Border color for Mortality bars
         width: 1
       }
+    },
+    hoverinfo: 'x+y', // Show x and y values on hover
+    hoverlabel: {
+      bgcolor: '#A3D9CF', // Hover box background color for Mortality bars
+      bordercolor: '#A3D9CF', // Hover box border color for Mortality bars
+      font: { color: 'black' } // Font color for hover text
     }
   };
 
@@ -411,10 +423,13 @@ d3.json('/Latinincidents').then(function(responseData) {
       title: 'ASP (World) per 100,000'
     },
     yaxis: {
-      title: 'Category'
+      automargin: true, // Automatically adjust margin to fit labels
+      tickmode: 'linear', // Show all ticks
+      tick0: 0,
+      dtick: 1
     },
     barmode: 'group', // Group bars by category
-    bargap: 0.5,
+    bargap: 0.3, // Adjust the value to increase or decrease the gap between groups
     height: 700,
     width: 800
   };
