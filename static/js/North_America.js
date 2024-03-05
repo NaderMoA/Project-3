@@ -457,20 +457,9 @@ d3.json("/Northamericalung").then(response => {
 
   const chartData = [trace1, trace2, trace3, trace4];
   
-  // Define frames
-  const frames = [];
-  const n = years.length;
-  for (let i = 0; i < n; i++) {
-      frames[i] = {
-          name: `frame-${i}`,
-          data: [
-              { x: years.slice(0, i + 1), y: usMales.slice(0, i + 1) },
-              { x: years.slice(0, i + 1), y: usFemales.slice(0, i + 1) },
-              { x: years.slice(0, i + 1), y: canadaMales.slice(0, i + 1) },
-              { x: years.slice(0, i + 1), y: canadaFemales.slice(0, i + 1) }
-          ]
-      };
-  }
+
+
+ 
 
   Plotly.newPlot('trend', chartData, layout).then(function() {
       Plotly.addFrames('trend', frames);
