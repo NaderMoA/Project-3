@@ -92,3 +92,9 @@ body {
   background-color: orange;
   color: black;
 }
+.background-image {
+  background-image: url("https://assets.newatlas.com/dims4/default/c075c21/2147483647/strip/true/crop/1737x1158+0+0/resize/720x480!/quality/90/?url=http%3A%2F%2Fnewatlas-brightspot.s3.amazonaws.com%2F1e%2Fed%2F514a2fcf49c0ae72e3b5cd31d3da%2Fdepositphotos-648159700-l.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+ 
+}

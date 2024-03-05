@@ -314,6 +314,15 @@ d3.json("/Northamericacase").then(response => {
           fetch("https://raw.githubusercontent.com/PublicaMundi/MappingAPI/master/data/geojson/us-states.json")
               .then(response => response.json())
               .then(usGeoJSON => {
+                function getColor(rate) {
+                  // Define color range based on Rate value
+                  return rate >= 170 ? '#800026' :
+                         rate >= 160 ? '#BD0026' :
+                         rate >= 150 ? '#E31A1C' :
+                         rate >= 140 ? '#FC4E2A' :
+                         rate >= 130 ? '#FD8D3C' :
+                                       '#FEB24C';
+              }
                   // Create a Leaflet GeoJSON layer for USA states
                   L.geoJSON(usGeoJSON, {
                       style: function (feature) {
@@ -351,120 +360,72 @@ d3.json("/Northamericacase").then(response => {
       .catch(error => console.error('Error fetching JSON from Flask:', error));
   
   // Function to determine color based on Rate value
-  function getColor(rate) {
-      // Define color range based on Rate value
-      return rate >= 170 ? '#800026' :
-             rate >= 160 ? '#BD0026' :
-             rate >= 150 ? '#E31A1C' :
-             rate >= 140 ? '#FC4E2A' :
-             rate >= 130 ? '#FD8D3C' :
-                           '#FEB24C';
-  }
+
 // Lung Trend chart
-d3.json("/Northamericalung").then(response => {
-  const data = response;
-  
-  const years = data.map(entry => entry.Category);
-  const usMales = data.map(entry => entry['US males']);
-  const usFemales = data.map(entry => entry['US females']);
-  const canadaMales = data.map(entry => entry['Canada males']);
-  const canadaFemales = data.map(entry => entry['Canada females']);
+d3.json('/Northamericalung')
+    .then(data2 => {
+        // Extract data
+        let categories = [];
+        let usMales = [];
+        let usFemales = [];
+        let canadaMales = [];
+        let canadaFemales = [];
 
-  const trace1 = {
-      x: years,
-      y: usMales,
-      mode: 'lines',
-      name: 'US Males',
-      line: { color: '#2573a1' } // Custom color for US Males
-  };
+        data2.forEach(entry => {
+            categories.push(entry.Category);
+            usMales.push(entry['US males']);
+            usFemales.push(entry['US females']);
+            canadaMales.push(entry['Canada males']);
+            canadaFemales.push(entry['Canada females']);
+        });
 
-  const trace2 = {
-      x: years,
-      y: usFemales,
-      mode: 'lines',
-      name: 'US Females',
-      line: { color: '#ccaeea' } // Custom color for US Females
-  };
+        // Create traces for each category
+        let traceUsMales = {
+            x: categories,
+            y: usMales,
+            mode: 'lines',
+            name: 'US Males'
+        };
 
-  const trace3 = {
-      x: years,
-      y: canadaMales,
-      mode: 'lines',
-      name: 'Canada Males',
-      line: { color: '#e5526f' } // Custom color for Canada Males
-  };
+        let traceUsFemales = {
+            x: categories,
+            y: usFemales,
+            mode: 'lines',
+            name: 'US Females'
+        };
 
-  const trace4 = {
-      x: years,
-      y: canadaFemales,
-      mode: 'lines',
-      name: 'Canada Females',
-      line: { color: '#22b1b9' } // Custom color for Canada Females
-  };
+        let traceCanadaMales = {
+            x: categories,
+            y: canadaMales,
+            mode: 'lines',
+            name: 'Canada Males'
+        };
 
-  const layout = {
-    title: 'Lung Cancer Trend',
-    xaxis: {
-        title: 'Year'
-    },
-    yaxis: {
-        title: 'Cancer Cases'
-    },
-    hoverlabel: {
-        font: { color: 'white' } // Set the hover text color to white
-    },
-    updatemenus: [{
-        x: 0.5,
-        y: 0,
-        yanchor: "top",
-        xanchor: "center",
-        showactive: false,
-        direction: "left",
-        type: "buttons",
-        pad: {"t": 87, "r": 10},
-        buttons: [{
-            method: "animate",
-            args: [null, {
-                fromcurrent: true,
-                transition: {
-                    duration: 5000, // Adjust the duration to make the animation smoother
-                },
-                frame: {
-                    duration: 150,
-                    redraw: false
-                }
-            }],
-            label: "Play"
-        }, {
-            method: "animate",
-            args: [
-                [null],
-                {
-                    mode: "immediate",
-                    transition: {
-                        duration: 5000 // Adjust the duration to make the animation smoother
-                    },
-                    frame: {
-                        duration: 10,
-                        redraw: false
-                    }
-                }
-            ],
-            label: "Pause"
-        }]
-    }]
-};
+        let traceCanadaFemales = {
+            x: categories,
+            y: canadaFemales,
+            mode: 'lines',
+            name: 'Canada Females'
+        };
 
-  const chartData = [trace1, trace2, trace3, trace4];
-  
+        // Define layout
+        let layout = {
+            title: 'Lung Data by Category',
+            xaxis: {
+                title: 'Category'
+            },
+            yaxis: {
+                title: 'Count'
+            }
+        };
 
+        // Combine traces into data list
+        let plotlyData = [traceUsMales, traceUsFemales, traceCanadaMales, traceCanadaFemales];
 
- 
-
-  Plotly.newPlot('trend', chartData, layout).then(function() {
-      Plotly.addFrames('trend', frames);
-  });
-}).catch(error => console.error('Error fetching JSON:', error));
+        // Plot the chart
+        Plotly.newPlot('trend', plotlyData, layout);
+    })
+    .catch(error => console.error('Error fetching data:', error));
 
 
 
