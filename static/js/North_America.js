@@ -439,12 +439,12 @@ fetch('/Northamericalung')
 
         // Define layout
         const layout = {
-            title: 'Cancer Cases in North America',
+            title: 'Lung Cancer Trend in North America',
             xaxis: {
                 title: 'Year'
             },
             yaxis: {
-                title: 'Number of Cases'
+                title: 'ASR (World) per 100,000'
             }
         };
 
