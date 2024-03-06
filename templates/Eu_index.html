@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Cancer Mini Atlas</title>
+  
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <!-- Bootsrap CSS-->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/stylesheet.css') }}">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+</head>
+
+<body>
+  <header class="header">
+    <div class="container">
+      <div class="row">
+        <div class="col">
+          <a href="/" class="btn btn-link"><h1>WELCOME TO CANCER MINI ATLAS</h1></a>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <a href="/Cancer" class="btn btn-primary">TOP TEN DEADLIEST CANCERS</a>
+          <a href="/Europe" class="btn btn-primary">EUROPE</a>
+          <a href="/Northamerica" class="btn btn-primary">US & CANADA</a>
+          <a href="/Latin" class="btn btn-primary">LATIN AMERICA</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  
+  <div class="container">
+    <div class="row mt-3">
+      <div class="col text-center">
+        <p><h3>Breast, colorectal, lung and prostate cancers represent over half of all cancer diagnoses in Europe.</h3></p>
+       <p><h3>Cancers of the female breast (523,000 new cases, 13% of all cancer cases), colorectum (500,000, 13%), lung (470,000, 12%), and prostate (450,000, 12%) were the most common cancers on the continent, and combined they represented almost half of the overall cancer burden.</h3></p>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="row mt-5">
+      <div class="col-md-6">
+        <p>Estimated number of new cancer cases vs. deaths and distribution (%) by type, both sexes.</p>
+      </div>
+      <div class="col-md-6 d-flex align-items-center justify-content-end">
+        
+      </div>
+    </div>
+  </div> 
+  <!-- <div id="horizontal_bar_chart"></div> -->
+  <div id="donut_chart1" style="height: 400px;"></div>
+
+  <div id="donut_chart2" style="height: 400px;"></div>
+
+  <div id="tooltip" class="tooltip"></div>
+
+  <div class="container">
+    <div class="row mt-3">
+      <div class="col text-center">
+        <h4><p>Most commonly diagnosed cancers in Europe among males and females</p></h4>
+      </div>
+    </div>
+  </div>
+  <select id="dropdown">
+    <option value="EuropeMale">Male</option>
+    <option value="EuropeFemale">Female</option>
+    
+  </select>
+  <div id="map" style="height: 400px;"></div>
+  
+  <!-- Plotly chart div -->
+  <div class="container">
+    <div class="row mt-3">
+  <div id="plot" style="height: 600px;"></div>
+  </div>
+</div>
+  
+  <!-- <script src="{{ url_for('static', filename='js/top_ten_deadliests.js') }}"></script> -->
+  <script src="{{ url_for('static', filename='js/Europe.js') }}"></script>
+<!-- Bootsrap js-->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script> 
+</body>
+</html>
