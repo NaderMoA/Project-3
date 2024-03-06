@@ -12,46 +12,50 @@ const Esri_WorldGrayCanvas = L.tileLayer('https://server.arcgisonline.com/ArcGIS
 }).addTo(map);
 CountryMap("EuropeMale")
 function CountryMap(dropdownCountry) {
-  console.log(dropdownCountry)
+  console.log(dropdownCountry);
 
-fetch("https://gist.githubusercontent.com/NaderMoA/b345d653276912fa6e9a0f2aed6fdb25/raw/426fb47f0a6793776a044f17e66d17cbbf8061ad/countries.geo.json")
-    .then(response => response.json())
-    .then(geojsonData => {
-        // Fetch data from Flask endpoint
-        //`/${dropdownCountry}`
-        d3.json(`/${dropdownCountry}`).then(commonCancerData => {
-                // Loop through GeoJSON features
-                geojsonData.features.forEach(feature => {
-                    // Extract id from GeoJSON properties
-                    const id = feature.id;
+  fetch("https://gist.githubusercontent.com/NaderMoA/b345d653276912fa6e9a0f2aed6fdb25/raw/426fb47f0a6793776a044f17e66d17cbbf8061ad/countries.geo.json")
+      .then(response => response.json())
+      .then(geojsonData => {
+          // Fetch data from Flask endpoint
+          //`/${dropdownCountry}`
+          d3.json(`/${dropdownCountry}`).then(commonCancerData => {
+              // Loop through GeoJSON features
+              geojsonData.features.forEach(feature => {
+                  // Extract id from GeoJSON properties
+                  const id = feature.id;
 
-                    // Find corresponding data in fetched data
-                    const rowData = commonCancerData.find(row => row['ISO_3_CODE'] === id);
+                  // Find corresponding data in fetched data
+                  const rowData = commonCancerData.find(row => row['ISO_3_CODE'] === id);
 
-                    // If data found, customize GeoJSON feature style
-                    if (rowData) {
-                        const cancerType = rowData['VALUE'];
-                        // Customize the fill color based on cancer type
-                        feature.properties.fillColor = getCancerColor(cancerType);
-                    }
-                });
+                  // If data found, customize GeoJSON feature style
+                  if (rowData) {
+                      const cancerType = rowData['VALUE'];
+                      // Customize the fill color based on cancer type
+                      feature.properties.fillColor = getCancerColor(cancerType);
+                  }
+              });
 
-                // Add the GeoJSON layer to the map
-                L.geoJSON(geojsonData, {
-                    style: function(feature) {
-                        return {
-                            fillColor: feature.properties.fillColor , // Default fill color if no match found in fetched data
-                            color: 'white', // Default border color
-                            weight: 1, // Default border width
-                            fillOpacity: 1 // Default fill opacity
-                        };
-                    }
-                }).addTo(map);
-            })
-            .catch(error => console.error('Error fetching or parsing data from Flask endpoint:', error));
-    })
-    .catch(error => console.error('Error fetching or parsing GeoJSON:', error))
-  }
+              // Add the GeoJSON layer to the map
+              L.geoJSON(geojsonData, {
+                  style: function(feature) {
+                      return {
+                          fillColor: feature.properties.fillColor , // Default fill color if no match found in fetched data
+                          color: 'white', // Default border color
+                          weight: 1, // Default border width
+                          fillOpacity: 1 // Default fill opacity
+                      };
+                  },
+                  onEachFeature: function(feature, layer) {
+                      // Bind country name as tooltip on mouseover
+                      layer.bindTooltip(feature.properties.name);
+                  }
+              }).addTo(map);
+          })
+          .catch(error => console.error('Error fetching or parsing data from Flask endpoint:', error));
+      })
+      .catch(error => console.error('Error fetching or parsing GeoJSON:', error))
+}
 
 // Function to get color based on cancer type
 function getCancerColor(cancerType) {
