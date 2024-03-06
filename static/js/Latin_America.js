@@ -328,12 +328,10 @@ function getCancerColor(cancerType) {
 }
 
 // Add the GeoJSON layer to the map
-fetch("/Latinmap")
-    .then(response => response.json())
+d3.json("/Latinmap")
     .then(geojsonData => {
         // Fetch data from Flask endpoint
-        fetch("/Latindeath")
-            .then(response => response.json())
+        d3.json("/Latindeath")
             .then(commonCancerData => {
                 L.geoJSON(geojsonData, {
                     style: function (feature) {
@@ -364,12 +362,16 @@ fetch("/Latinmap")
                             weight: 1, // Border width
                             fillOpacity: 0 // No fill
                         };
+                    },
+                    onEachFeature: function(feature, layer) {
+                        layer.bindTooltip(feature.properties.name); // Bind country name as tooltip on mouseover
                     }
                 }).addTo(map);
             })
             .catch(error => console.error('Error fetching or parsing data from Flask endpoint:', error));
     })
     .catch(error => console.error('Error fetching or parsing GeoJSON:', error));
+
     let legend = L.control({ position: 'bottomright' });
 
     legend.onAdd = function() {
