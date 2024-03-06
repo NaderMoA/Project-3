@@ -443,9 +443,9 @@ const trace2 = {
 };
 
   const layout = {
-      title: 'Lifetime Risk by Country',
+      title: 'Lifetime risk (%) of a cancer diagnosis in selected European countries by sex',
       xaxis: {
-          title: 'Lifetime Risk (%)',
+          title: 'Cumulative Risk',
           tickvals: [-50, -40, -30, -20, -10, 0, 10, 20, 30, 40, 50], // Sample tick values for demonstration
           ticktext: [50, 40, 30, 20, 10, 0, 10, 20, 30, 40, 50].map(val => Math.abs(val)), // Remove "-" sign from tick labels
           zeroline: false // Hide zero line

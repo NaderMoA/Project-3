@@ -295,69 +295,69 @@ d3.json("/Northamericacase").then(response => {
   .catch(error => console.error('Error fetching CSV:', error));
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // //The map
-  const map = L.map('map').setView([55, -97], 3); // Set initial map view to center of North America
+  // const map = L.map('map').setView([55, -97], 3); // Set initial map view to center of North America
 
-  // Add the Esri base layer to the map
-  const Esri_WorldGrayCanvas = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
-      attribution: 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ',
-      maxZoom: 16
-  }).addTo(map);
+  // // Add the Esri base layer to the map
+  // const Esri_WorldGrayCanvas = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
+  //     attribution: 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ',
+  //     maxZoom: 16
+  // }).addTo(map);
   
-  // Fetch JSON data from Flask route for US state rates
-  d3.json("/Northamericamap").then(response => {
-    console.log(response)
+  // // Fetch JSON data from Flask route for US state rates
+  // d3.json("/Northamericamap").then(response => {
+  //   console.log(response)
       
-          // Store the data in a variable accessible to the GeoJSON layer creation function
-          const usStateRates = response;
+  //         // Store the data in a variable accessible to the GeoJSON layer creation function
+  //         const usStateRates = response;
   
-          // Load GeoJSON data for USA states
-          fetch("https://raw.githubusercontent.com/PublicaMundi/MappingAPI/master/data/geojson/us-states.json")
-              .then(response => response.json())
-              .then(usGeoJSON => {
-                function getColor(rate) {
-                  // Define color range based on Rate value
-                  return rate >= 170 ? '#800026' :
-                         rate >= 160 ? '#BD0026' :
-                         rate >= 150 ? '#E31A1C' :
-                         rate >= 140 ? '#FC4E2A' :
-                         rate >= 130 ? '#FD8D3C' :
-                                       '#FEB24C';
-              }
-                  // Create a Leaflet GeoJSON layer for USA states
-                  L.geoJSON(usGeoJSON, {
-                      style: function (feature) {
-                          // Get state code from feature properties
-                          const stateCode = feature.properties.state_code;
-                          // Find the entry with matching state code
-                          const stateEntry = usStateRates.find(entry => entry.STATE === stateCode);
-                          // If state entry found, parse rate value and set fillColor accordingly
-                          if (stateEntry) {
-                              const rate = parseFloat(stateEntry.RATE);
-                              return {
-                                  fillColor: getColor(rate),
-                                  weight: 2,
-                                  opacity: 1,
-                                  color: 'white',
-                                  dashArray: '3',
-                                  fillOpacity: 0.7
-                              };
-                          } else {
-                              // If no matching entry found, use default style
-                              return {
-                                  fillColor: 'gray',
-                                  weight: 2,
-                                  opacity: 1,
-                                  color: 'white',
-                                  dashArray: '3',
-                                  fillOpacity: 0.7
-                              };
-                          }
-                      }
-                  }).addTo(map); // Add GeoJSON layer to the map
-              })
-              .catch(error => console.error('Error loading USA GeoJSON:', error));
-      })
-      .catch(error => console.error('Error fetching JSON from Flask:', error));
+  //         // Load GeoJSON data for USA states
+  //         fetch("https://raw.githubusercontent.com/PublicaMundi/MappingAPI/master/data/geojson/us-states.json")
+  //             .then(response => response.json())
+  //             .then(usGeoJSON => {
+  //               function getColor(rate) {
+  //                 // Define color range based on Rate value
+  //                 return rate >= 170 ? '#800026' :
+  //                        rate >= 160 ? '#BD0026' :
+  //                        rate >= 150 ? '#E31A1C' :
+  //                        rate >= 140 ? '#FC4E2A' :
+  //                        rate >= 130 ? '#FD8D3C' :
+  //                                      '#FEB24C';
+  //             }
+  //                 // Create a Leaflet GeoJSON layer for USA states
+  //                 L.geoJSON(usGeoJSON, {
+  //                     style: function (feature) {
+  //                         // Get state code from feature properties
+  //                         const stateCode = feature.properties.state_code;
+  //                         // Find the entry with matching state code
+  //                         const stateEntry = usStateRates.find(entry => entry.STATE === stateCode);
+  //                         // If state entry found, parse rate value and set fillColor accordingly
+  //                         if (stateEntry) {
+  //                             const rate = parseFloat(stateEntry.RATE);
+  //                             return {
+  //                                 fillColor: getColor(rate),
+  //                                 weight: 2,
+  //                                 opacity: 1,
+  //                                 color: 'white',
+  //                                 dashArray: '3',
+  //                                 fillOpacity: 0.7
+  //                             };
+  //                         } else {
+  //                             // If no matching entry found, use default style
+  //                             return {
+  //                                 fillColor: 'gray',
+  //                                 weight: 2,
+  //                                 opacity: 1,
+  //                                 color: 'white',
+  //                                 dashArray: '3',
+  //                                 fillOpacity: 0.7
+  //                             };
+  //                         }
+  //                     }
+  //                 }).addTo(map); // Add GeoJSON layer to the map
+  //             })
+  //             .catch(error => console.error('Error loading USA GeoJSON:', error));
+  //     })
+  //     .catch(error => console.error('Error fetching JSON from Flask:', error));
   
   // Function to determine color based on Rate value
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
