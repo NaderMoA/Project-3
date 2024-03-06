@@ -22,6 +22,19 @@ body {
     cursor: pointer;
   } 
 
+  .popup p {
+    color: white; /* Text color */
+    font-size: 18px; /* Adjust font size as needed */
+    margin-top: 20px; /* Spacing between image and text */
+  }
+/* .custom-popup {
+  max-width: 400px; /* Adjust the maximum width of the popup }*/ 
+
+
+.custom-popup p {
+  margin: 8px 0; /* Adjust the margin between paragraphs */
+  line-height: 1.5; /* Adjust the line height */
+}
   .header {
     background-color: black; /* Blue background color */
     color: #fff; /* White text color */

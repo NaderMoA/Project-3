@@ -79,16 +79,54 @@ fetch("/Cancertop") // Update the route to your Flask endpoint
   document.getElementById('horizontal_bar_chart').on('plotly_click', function(data) {
     // Get the index of the clicked bar
     const index = data.points[0].pointNumber;
-
+  
     // Get the cancer type
     const cancerType = deadliestCancers[index];
-
+  
     // Get the image URL for the cancer type
     const imageUrl = getImageUrl(cancerType);
-
-    // Open a popup or modal with the image
+  
+    // Define the specific text for the image
+    let specificText;
+    switch (cancerType) {
+      case "Pancreatic cancer":
+        specificText = "Digestive system cancers in general are quite deadly, with fewer than half of patients surviving five years, and pancreatic cancer is the deadliest of the bunch. ";
+        break;
+      case "Mesothelioma":
+        specificText = "Three out of four mesotheliomas develop in the mesothelium that surrounds the lungs  ";
+        break;
+      case "Gallbladder cancer":
+        specificText = "Gallstones significantly increase the risk of developing gallbladder cancer."
+        break;  
+        case "Esophageal cancer":
+          specificText = "Risk factors for esophageal cancer include older age, being male, smoking, drinking alcohol and having acid reflux"
+          break; 
+          case "Liver and intrahepatic bile duct cancer":
+            specificText = "Liver cancer is one of the most common forms of cancer worldwide"
+            break; 
+            case "Lung and bronchial cancer":
+              specificText = "Lung and bronchial cancer kill the most people worldwide every year."
+              break;
+            case "Pleural cancer":
+              specificText = "Pleural cancer occurs in the pleural cavity, the space within the chest cavity but outside the lungs, or in the layer of cells that surrounds the lungs."
+              break; 
+            case "Acute monocytic leukemia":
+              specificText = "It develops in blood precursor cells that are on their way to becoming immune-system cells called monocytes"
+              break;
+            case "Acute myeloid leukemia":
+              specificText = "Leukemias develop from stem cells in the bone marrow"
+              break;  
+            case "Brain cancer":
+              specificText = "In adults, brain tumors rarely begin in the brain. More often, they spread there from other cancers"
+              break;                                                                                    
+      // Add more cases for other cancer types as needed
+      default:
+        specificText = "This image represents " + cancerType + ".";
+    }
+  
+    // Open a popup or modal with the image and specific text
     if (imageUrl) {
-      openPopup(imageUrl);
+      openPopup(imageUrl, specificText);
     }
   });
 
@@ -110,21 +148,32 @@ fetch("/Cancertop") // Update the route to your Flask endpoint
   }
 
   // Function to open a popup or modal with the image
-  function openPopup(imageUrl) {
+  function openPopup(imageUrl, text) {
     // Create a popup or modal element
     const popup = document.createElement('div');
     popup.classList.add('popup');
-
+  
     // Create an image element to display the image
     const image = document.createElement('img');
     image.src = imageUrl;
-
-    // Append the image to the popup
+  
+    // Create paragraphs for each line of text
+    const paragraphs = text.split('\n').map(line => {
+      const paragraph = document.createElement('p');
+      paragraph.textContent = line;
+      return paragraph;
+    });
+  
+    // Add a class to the popup for styling
+    //popup.classList.add('custom-popup');
+  
+    // Append the image and paragraphs to the popup
     popup.appendChild(image);
-
+    paragraphs.forEach(paragraph => popup.appendChild(paragraph));
+  
     // Append the popup to the document body
     document.body.appendChild(popup);
-
+  
     // Add event listener to close the popup when clicked outside the image
     popup.addEventListener('click', function(event) {
       if (event.target === popup) {
