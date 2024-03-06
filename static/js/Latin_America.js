@@ -449,7 +449,7 @@ d3.json('/Latinincidents').then(function(responseData) {
   const layout = {
     title: 'Incidence and Mortality by Category',
     xaxis: {
-      title: 'ASP (World) per 100,000'
+      title: 'ASR (World) per 100,000'
     },
     yaxis: {
       automargin: true, // Automatically adjust margin to fit labels
