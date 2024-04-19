@@ -1,6 +1,7 @@
 from flask import Flask, render_template, jsonify
 #from flask_pymongo import PyMongo
 from pymongo import MongoClient
+import pickle
 from pprint import pprint
 
 app = Flask(__name__)
@@ -83,7 +84,8 @@ def Nadeath():
     db = mongo["Northamerica"]
     na_vase_death_data = db["case_death"]
     Na_case_death = list(na_vase_death_data.find({}, {'_id': 0}))
-    return jsonify(Na_case_death)  
+    return jsonify(Na_case_death)
+  
 @app.route('/Northamericamap')
 def Namap():
     db = mongo["Northamerica"]
@@ -108,12 +110,14 @@ def latmap():
     lat_map_data = db["latin_map"]
     Na_map = list(lat_map_data.find({}, {'_id': 0}))
     return (Na_map)
+
 @app.route('/Latindeath')
 def latdeath():
     db = mongo["Latin"]
     lat_death_data = db["latin_death"]
     lat_death = list(lat_death_data.find({}, {'_id': 0}))
     return jsonify(lat_death)
+
 @app.route('/Latincase')
 def latcase():
     db = mongo["Latin"]
@@ -139,6 +143,16 @@ def topten():
     top_ten = db["test2"]
     top_ten_data = list(top_ten.find({}, {'_id': 0}))
     return jsonify(top_ten_data)
+
+@app.route('/prediction/<country>')
+def argentina_prediction():
+    with open('argentina_forecast.pkl', 'rb') as f:
+    argentina_forecast = pickle.load(f)
+
+    return jsonify(argentina_forecast)
+
+
+
 
 
 if __name__ == '__main__':
