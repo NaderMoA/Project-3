@@ -43,10 +43,12 @@ document.addEventListener('DOMContentLoaded', function() {
                             },
                             series: [{
                                 name: 'Male',
-                                data: male_yhat.map(parseFloat) // Convert data points to floats
+                                data: male_yhat.map(parseFloat), // Convert data points to floats
+                                color: 'steelblue'
                             }, {
                                 name: 'Female',
-                                data: female_yhat.map(parseFloat) // Convert data points to floats
+                                data: female_yhat.map(parseFloat), // Convert data points to floats
+                                color: 'orange'
                             }]
                         });
                     })
