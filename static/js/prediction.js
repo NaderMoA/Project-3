@@ -2,8 +2,16 @@ document.addEventListener('DOMContentLoaded', function() {
     const countrySelect = document.getElementById('countrySelect');
     const chartContainer = document.getElementById('predictionChart');
 
+    // Function to capitalize the first letter of a string
+    function capitalizeFirstLetter(string) {
+        return string.charAt(0).toUpperCase() + string.slice(1);
+    }
+
     // Function to fetch and display chart data for the selected country
     function displayChart(country) {
+        // Capitalize the first letter of the country name
+        const capitalizedCountry = capitalizeFirstLetter(country);
+
         // Construct the URLs for fetching data based on the selected country
         const maleUrl = `/prediction${country}_forecast`;
         const femaleUrl = `/predictionf_${country}_forecast`;
@@ -28,7 +36,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                 type: 'line'
                             },
                             title: {
-                                text: `Lung Cancer Death Rates Prediction for ${country}`
+                                text: `Lung Cancer Death Rates Prediction for ${capitalizedCountry}`
                             },
                             xAxis: {
                                 categories: male_ds.map(String), // Convert years to strings
@@ -42,11 +50,11 @@ document.addEventListener('DOMContentLoaded', function() {
                                 }
                             },
                             series: [{
-                                name: 'Male',
+                                name: `${capitalizedCountry} Male`,
                                 data: male_yhat.map(parseFloat), // Convert data points to floats
                                 color: 'steelblue'
                             }, {
-                                name: 'Female',
+                                name: `${capitalizedCountry} Female`,
                                 data: female_yhat.map(parseFloat), // Convert data points to floats
                                 color: 'orange'
                             }]
