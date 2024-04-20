@@ -28,47 +28,47 @@ def argentina_forecast():
     argentina_forecast_results = list(argentina_forecast.find({}, {'_id': 0}))  # Excludes the _id field
     return jsonify(argentina_forecast_results)
 
-@app.route('/prediction/f_argentina_forecast')
+@app.route('/predictionf_argentina_forecast')
 def f_argentina_forecast():
     db = mongo["Predictions"]
     f_argentina_forecast = db["f_argentina_forecast"]
     f_argentina_forecast_results = list(f_argentina_forecast.find({}, {'_id': 0}))  # Excludes the _id field
     return jsonify(f_argentina_forecast_results)  
 
-@app.route('/prediction/spain_forecast')
+@app.route('/predictionspain_forecast')
 def spain_forecast():
     db = mongo["Predictions"]
     spain_forecast = db["spain_forecast"]
     spain_forecast_results = list(spain_forecast.find({}, {'_id': 0}))  # Excludes the _id field
     return jsonify(spain_forecast_results) 
 
-@app.route('/prediction/f_spain_forecast')
+@app.route('/predictionf_spain_forecast')
 def f_spain_forecast():
     db = mongo["Predictions"]
     f_spain_forecast = db["f_spain_forecast"]
     f_spain_forecast_results = list(f_spain_forecast.find({}, {'_id': 0}))  # Excludes the _id field
     return jsonify(f_spain_forecast_results)  
-@app.route('/prediction/uk_forecast')
+@app.route('/predictionuk_forecast')
 def uk_forecast():
     db = mongo["Predictions"]
     uk_forecast = db["uk_forecast"]
     uk_forecast_results = list(uk_forecast.find({}, {'_id': 0}))  # Excludes the _id field
     return jsonify(uk_forecast_results) 
 
-@app.route('/prediction/f_uk_forecast')
+@app.route('/predictionf_uk_forecast')
 def f_uk_forecast():
     db = mongo["Predictions"]
     f_uk_forecast = db["f_uk_forecast"]
     f_uk_forecast_results = list(f_uk_forecast.find({}, {'_id': 0}))  # Excludes the _id field
     return jsonify(f_uk_forecast_results) 
-@app.route('/prediction/us_forecast')
+@app.route('/predictionus_forecast')
 def us_forecast():
     db = mongo["Predictions"]
     us_forecast = db["us_forecast"]
     us_forecast_results = list(us_forecast.find({}, {'_id': 0}))  # Excludes the _id field
     return jsonify(us_forecast_results) 
 
-@app.route('/prediction/f_us_forecast')
+@app.route('/predictionf_us_forecast')
 def f_us_forecast():
     db = mongo["Predictions"]
     f_us_forecast = db["f_us_forecast"]
