@@ -25,12 +25,17 @@
 </head>
 
 <body>
-    <select id="countrySelect">
-        <option value="argentina">Argentina</option>
-        <option value="spain">Spain</option>
-        <option value="uk">UK</option>
-        <option value="us">US</option>
-      </select>
+    <div class="container">
+        <!-- Dropdown menu for selecting countries -->
+        <div class="mb-3">
+            <label for="countrySelect" class="form-label">Select a country:</label>
+            <select id="countrySelect" class="form-select">
+                <option value="argentina">Argentina</option>
+                <option value="spain">Spain</option>
+                <option value="uk">UK</option>
+                <option value="us">US</option>
+            </select>
+        </div>
       <div id="predictionChart"></div>
     <script src="{{ url_for('static', filename='js/prediction.js') }}"></script>
     <!-- Bootstrap JS -->
