@@ -139,3 +139,19 @@ document.addEventListener('DOMContentLoaded', function() {
         return country.charAt(0).toUpperCase() + country.slice(1);
     }
 });
+
+
+
+// Get the current URL path
+const currentPath = window.location.pathname;
+
+// Get all the buttons in the header
+const buttons = document.querySelectorAll('.header .btn');
+
+// Loop through each button to check if its href matches the current path
+buttons.forEach(button => {
+  if (button.getAttribute('href') === currentPath) {
+    // Add the 'active' class to the button if it matches the current path
+    button.classList.add('active');
+  }
+});
