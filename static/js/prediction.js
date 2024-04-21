@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                 type: 'line'
                             },
                             title: {
-                                text: `Lung Cancer Death Rates Prediction for ${formatCountry(country)}`
+                                text: `Predicted Lung Cancer Death Rates for ${formatCountry(country)}`
                             },
                             xAxis: {
                                 categories: male_ds.map(String), // Convert years to strings
@@ -71,32 +71,51 @@ document.addEventListener('DOMContentLoaded', function() {
         fetch(historicUrl)
             .then(response => response.json())
             .then(historicData => {
-                // Convert fetched data into a format compatible with Google Charts API
-                const chartData = [['Year',  `Historic ${formatCountry(country)} Male`, `Historic ${formatCountry(country)} Femle`]];
-                historicData.forEach(row => {
-                    const year = new Date(row.Year, 0, 1); // Convert year to a Date object
-                    chartData.push([year, parseFloat(row['age-standardized_death_rate_per_100k_male']), parseFloat(row['age-standardized_death_rate_per_100k_female'])]);
+                // Convert fetched data into a format compatible with Highcharts
+                const chartData = historicData.map(row => {
+                    const year = new Date(row.Year, 0, 1).getTime(); // Convert year to milliseconds
+                    return [year, parseFloat(row['age-standardized_death_rate_per_100k_male']), parseFloat(row['age-standardized_death_rate_per_100k_female'])];
                 });
     
-                // Draw the historic line chart using Google Charts API
-                google.charts.load('current', {'packages':['corechart']});
-                google.charts.setOnLoadCallback(drawChart);
-    
-                function drawChart() {
-                    var data = google.visualization.arrayToDataTable(chartData);
-    
-                    var options = {
-                        title: `Historic Lung Cancer Death Rates for ${formatCountry(country)}`,
-                        curveType: 'function',
-                        legend: { position: 'bottom' },
-                        hAxis: {
-                            format: 'yyyy' // Format the x-axis as 'YYYY'
+                // Draw the historic line chart using Highcharts
+                Highcharts.chart(historicChartContainer, {
+                    chart: {
+                        type: 'line'
+                    },
+                    title: {
+                        text: `Historic Lung Cancer Death Rates for ${formatCountry(country)}`
+                    },
+                    xAxis: {
+                        type: 'datetime',
+                        title: {
+                            text: 'Year'
+                        },
+                        labels: {
+                            formatter: function () {
+                                return Highcharts.dateFormat('%Y', this.value); // Format tooltip to show only the year
+                            }
                         }
-                    };
-    
-                    var chart = new google.visualization.LineChart(historicChartContainer);
-                    chart.draw(data, options);
-                }
+                    },
+                    yAxis: {
+                        title: {
+                            text: 'Death Rate (per 100k)'
+                        }
+                    },
+                    tooltip: {
+                        formatter: function () {
+                            return `<b>${Highcharts.dateFormat('%Y', this.x)}</b><br/>${this.series.name}: ${this.y}`;
+                        }
+                    },
+                    series: [{
+                        name: `${formatCountry(country)} Male`,
+                        data: chartData.map(row => [row[0], row[1]]), // Extract male death rates
+                        color: 'steelblue'
+                    }, {
+                        name: `${formatCountry(country)} Female`,
+                        data: chartData.map(row => [row[0], row[2]]), // Extract female death rates
+                        color: 'orange'
+                    }]
+                });
             })
             .catch(error => {
                 console.error('Error fetching historic data:', error);
