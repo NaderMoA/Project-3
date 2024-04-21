@@ -95,6 +95,47 @@ def us_forecast():
     us_forecast = db["us_forecast"]
     us_forecast_results = list(us_forecast.find({}, {'_id': 0}))  # Excludes the _id field
     return jsonify(us_forecast_results) 
+@app.route('/predictionus_historic')
+def us_historic():
+    db = mongo["Predictions"]
+    us_historic = db["us_historic"]
+    us_historic_results = list(us_historic.find({}, {'_id': 0}))  # Excludes the _id field
+    return jsonify(us_historic_results) 
+
+@app.route('/predictionuk_historic')
+def uk_historic():
+    db = mongo["Predictions"]
+    uk_historic = db["uk_historic"]
+    uk_historic_results = list(uk_historic.find({}, {'_id': 0}))  # Excludes the _id field
+    return jsonify(uk_historic_results) 
+
+@app.route('/predictionargentina_historic')
+def argentina_historic():
+    db = mongo["Predictions"]
+    argentina_historic = db["argentina_historic"]
+    argentina_historic_results = list(argentina_historic.find({}, {'_id': 0}))  # Excludes the _id field
+    return jsonify(argentina_historic_results) 
+
+@app.route('/predictionsweden_historic')
+def sweden_historic():
+    db = mongo["Predictions"]
+    sweden_historic = db["sweden_historic"]
+    sweden_historic_results = list(sweden_historic.find({}, {'_id': 0}))  # Excludes the _id field
+    return jsonify(sweden_historic_results) 
+
+@app.route('/predictionchile_historic')
+def chile_historic():
+    db = mongo["Predictions"]
+    chile_historic = db["chile_historic"]
+    chile_historic_results = list(chile_historic.find({}, {'_id': 0}))  # Excludes the _id field
+    return jsonify(chile_historic_results) 
+
+@app.route('/predictionspain_historic')
+def spain_historic():
+    db = mongo["Predictions"]
+    spain_historic = db["spain_historic"]
+    spain_historic_results = list(spain_historic.find({}, {'_id': 0}))  # Excludes the _id field
+    return jsonify(spain_historic_results) 
 
 @app.route('/predictionf_us_forecast')
 def f_us_forecast():
