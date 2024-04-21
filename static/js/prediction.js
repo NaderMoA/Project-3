@@ -1,9 +1,10 @@
 document.addEventListener('DOMContentLoaded', function() {
     const countrySelect = document.getElementById('countrySelect');
-    const chartContainer = document.getElementById('predictionChart');
+    const predictionChartContainer = document.getElementById('predictionChart'); // Corrected variable name
+    const historicChartContainer = document.getElementById('historicChart');
 
-    // Function to fetch and display chart data for the selected country
-    function displayChart(country) {
+    // Function to fetch and display forecast chart data for the selected country
+    function displayForecastChart(country) {
         // Construct the URLs for fetching data based on the selected country
         const maleUrl = `/prediction${country}_forecast`;
         const femaleUrl = `/predictionf_${country}_forecast`;
@@ -23,7 +24,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         const female_yhat = femaleData.map(item => parseFloat(item.yhat).toFixed(2)); // Round to 2 decimal places
 
                         // Initialize Highcharts chart
-                        Highcharts.chart(chartContainer, {
+                        Highcharts.chart(predictionChartContainer, { // Use predictionChartContainer here
                             chart: {
                                 type: 'line'
                             },
@@ -61,23 +62,61 @@ document.addEventListener('DOMContentLoaded', function() {
             });
     }
 
+    // Function to fetch and display historic chart data for the selected country
+    function displayHistoricChart(country) {
+        // Construct the URL for fetching historic data based on the selected country
+        const historicUrl = `/prediction${country}_historic`;
+    
+        // Fetch historic data for the selected country
+        fetch(historicUrl)
+            .then(response => response.json())
+            .then(historicData => {
+                // Convert fetched data into a format compatible with Google Charts API
+                const chartData = [['Year',  `Historic ${formatCountry(country)} Male`, `Historic ${formatCountry(country)} Femle`]];
+                historicData.forEach(row => {
+                    const year = new Date(row.Year, 0, 1); // Convert year to a Date object
+                    chartData.push([year, parseFloat(row['age-standardized_death_rate_per_100k_male']), parseFloat(row['age-standardized_death_rate_per_100k_female'])]);
+                });
+    
+                // Draw the historic line chart using Google Charts API
+                google.charts.load('current', {'packages':['corechart']});
+                google.charts.setOnLoadCallback(drawChart);
+    
+                function drawChart() {
+                    var data = google.visualization.arrayToDataTable(chartData);
+    
+                    var options = {
+                        title: `Historic Lung Cancer Death Rates for ${formatCountry(country)}`,
+                        curveType: 'function',
+                        legend: { position: 'bottom' },
+                        hAxis: {
+                            format: 'yyyy' // Format the x-axis as 'YYYY'
+                        }
+                    };
+    
+                    var chart = new google.visualization.LineChart(historicChartContainer);
+                    chart.draw(data, options);
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching historic data:', error);
+            });
+    }
+
     // Event listener for the country selection dropdown
     countrySelect.addEventListener('change', function() {
         const selectedCountry = this.value;
-        displayChart(selectedCountry);
+        displayHistoricChart(selectedCountry);
+        displayForecastChart(selectedCountry);
     });
 
-    // Initial display of chart for the default selected country
+    // Initial display of both charts for the default selected country
     const defaultCountry = countrySelect.value;
-    displayChart(defaultCountry);
+    displayForecastChart(defaultCountry);
+    displayHistoricChart(defaultCountry);
 
     // Function to format country names with the first letter of each word capitalized
     function formatCountry(country) {
-        // Capitalize the first letter of each word, except for "US" and "UK"
-        if (country === 'us' || country === 'uk') {
-            return country.toUpperCase();
-        } else {
-            return country.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
-        }
+        return country.charAt(0).toUpperCase() + country.slice(1);
     }
 });
