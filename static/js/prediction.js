@@ -138,6 +138,18 @@ document.addEventListener('DOMContentLoaded', function() {
     function formatCountry(country) {
         return country.charAt(0).toUpperCase() + country.slice(1);
     }
+    function formatCountry(country) {
+        // Check if the country is UK or US
+        if (country === 'uk' || country === 'us') {
+            // If it's UK or US, return the capitalized abbreviation
+            return country.toUpperCase();
+        } else {
+            // For other countries, capitalize only the first letter of each word
+            return country.replace(/\b\w/g, function(char) {
+                return char.toUpperCase();
+            });
+        }
+    }
 });
 
 
