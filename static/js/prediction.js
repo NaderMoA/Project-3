@@ -39,17 +39,17 @@ document.addEventListener('DOMContentLoaded', function() {
                             },
                             yAxis: {
                                 title: {
-                                    text: 'Prediction'
+                                    text: 'Prediction Death Rate (per 100k)'
                                 }
                             },
                             series: [{
                                 name: `${formatCountry(country)} Male`,
                                 data: male_yhat.map(parseFloat), // Convert data points to floats
-                                color: 'steelblue'
+                                color: '#5F9595'
                             }, {
                                 name: `${formatCountry(country)} Female`,
                                 data: female_yhat.map(parseFloat), // Convert data points to floats
-                                color: 'orange'
+                                color: '#F0BC68'
                             }]
                         });
                     })
@@ -109,11 +109,11 @@ document.addEventListener('DOMContentLoaded', function() {
                     series: [{
                         name: `${formatCountry(country)} Male`,
                         data: chartData.map(row => [row[0], row[1]]), // Extract male death rates
-                        color: 'steelblue'
+                        color: '#2573a1'
                     }, {
                         name: `${formatCountry(country)} Female`,
                         data: chartData.map(row => [row[0], row[2]]), // Extract female death rates
-                        color: 'orange'
+                        color: '#e5526f'
                     }]
                 });
             })
