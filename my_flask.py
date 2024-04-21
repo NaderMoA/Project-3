@@ -35,6 +35,34 @@ def f_argentina_forecast():
     f_argentina_forecast_results = list(f_argentina_forecast.find({}, {'_id': 0}))  # Excludes the _id field
     return jsonify(f_argentina_forecast_results)  
 
+@app.route('/predictionchile_forecast')
+def chile_forecast():
+    db = mongo["Predictions"]
+    chile_forecast = db["chile_forecast"]
+    chile_forecast_results = list(chile_forecast.find({}, {'_id': 0}))  # Excludes the _id field
+    return jsonify(chile_forecast_results) 
+
+@app.route('/predictionf_chile_forecast')
+def f_chile_forecast():
+    db = mongo["Predictions"]
+    f_chile_forecast = db["f_chile_forecast"]
+    f_chile_forecast_results = list(f_chile_forecast.find({}, {'_id': 0}))  # Excludes the _id field
+    return jsonify(f_chile_forecast_results)  
+
+@app.route('/predictionsweden_forecast')
+def sweden_forecast():
+    db = mongo["Predictions"]
+    sweden_forecast = db["sweden_forecast"]
+    sweden_forecast_results = list(sweden_forecast.find({}, {'_id': 0}))  # Excludes the _id field
+    return jsonify(sweden_forecast_results) 
+
+@app.route('/predictionf_sweden_forecast')
+def f_sweden_forecast():
+    db = mongo["Predictions"]
+    f_sweden_forecast = db["f_sweden_forecast"]
+    f_sweden_forecast_results = list(f_sweden_forecast.find({}, {'_id': 0}))  # Excludes the _id field
+    return jsonify(f_sweden_forecast_results)  
+
 @app.route('/predictionspain_forecast')
 def spain_forecast():
     db = mongo["Predictions"]
