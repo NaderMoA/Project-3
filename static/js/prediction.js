@@ -113,7 +113,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     }, {
                         name: `${formatCountry(country)} Female`,
                         data: chartData.map(row => [row[0], row[2]]), // Extract female death rates
-                        color: '#e5526f'
+                        color: '#ff683b'
                     }]
                 });
             })
