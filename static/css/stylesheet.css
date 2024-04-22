@@ -96,13 +96,13 @@ body {
 
 /* Active button style */
 .btn.active {
-  background-color: orange;
+  background-color: red;
   color: black;
 }
 
 /* Hover effect for all buttons */
 .btn:hover {
-  background-color: orange;
+  background-color: purple;
   color: black;
 }
 .background-image {

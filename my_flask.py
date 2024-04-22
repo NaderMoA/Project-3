@@ -1,7 +1,8 @@
 from flask import Flask, render_template, jsonify
 #from flask_pymongo import PyMongo
 from pymongo import MongoClient
-from pprint import pprint
+
+from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 
@@ -14,7 +15,134 @@ mongo = MongoClient(mongo_uri)
 print(mongo.list_database_names())
 #db = mongo["Cancerproject3"]
 #print(db.list_collection_names())
+#postgress configuration:
 
+@app.route('/prediction')
+def pred():
+  return render_template('prediction_index.html') 
+
+@app.route('/predictionargentina_forecast')
+def argentina_forecast():
+    db = mongo["Predictions"]
+    argentina_forecast = db["argentina_forecast"]
+    argentina_forecast_results = list(argentina_forecast.find({}, {'_id': 0}))  # Excludes the _id field
+    return jsonify(argentina_forecast_results)
+
+@app.route('/predictionf_argentina_forecast')
+def f_argentina_forecast():
+    db = mongo["Predictions"]
+    f_argentina_forecast = db["f_argentina_forecast"]
+    f_argentina_forecast_results = list(f_argentina_forecast.find({}, {'_id': 0}))  # Excludes the _id field
+    return jsonify(f_argentina_forecast_results)  
+
+@app.route('/predictionchile_forecast')
+def chile_forecast():
+    db = mongo["Predictions"]
+    chile_forecast = db["chile_forecast"]
+    chile_forecast_results = list(chile_forecast.find({}, {'_id': 0}))  # Excludes the _id field
+    return jsonify(chile_forecast_results) 
+
+@app.route('/predictionf_chile_forecast')
+def f_chile_forecast():
+    db = mongo["Predictions"]
+    f_chile_forecast = db["f_chile_forecast"]
+    f_chile_forecast_results = list(f_chile_forecast.find({}, {'_id': 0}))  # Excludes the _id field
+    return jsonify(f_chile_forecast_results)  
+
+@app.route('/predictionsweden_forecast')
+def sweden_forecast():
+    db = mongo["Predictions"]
+    sweden_forecast = db["sweden_forecast"]
+    sweden_forecast_results = list(sweden_forecast.find({}, {'_id': 0}))  # Excludes the _id field
+    return jsonify(sweden_forecast_results) 
+
+@app.route('/predictionf_sweden_forecast')
+def f_sweden_forecast():
+    db = mongo["Predictions"]
+    f_sweden_forecast = db["f_sweden_forecast"]
+    f_sweden_forecast_results = list(f_sweden_forecast.find({}, {'_id': 0}))  # Excludes the _id field
+    return jsonify(f_sweden_forecast_results)  
+
+@app.route('/predictionspain_forecast')
+def spain_forecast():
+    db = mongo["Predictions"]
+    spain_forecast = db["spain_forecast"]
+    spain_forecast_results = list(spain_forecast.find({}, {'_id': 0}))  # Excludes the _id field
+    return jsonify(spain_forecast_results) 
+
+@app.route('/predictionf_spain_forecast')
+def f_spain_forecast():
+    db = mongo["Predictions"]
+    f_spain_forecast = db["f_spain_forecast"]
+    f_spain_forecast_results = list(f_spain_forecast.find({}, {'_id': 0}))  # Excludes the _id field
+    return jsonify(f_spain_forecast_results)  
+@app.route('/predictionuk_forecast')
+def uk_forecast():
+    db = mongo["Predictions"]
+    uk_forecast = db["uk_forecast"]
+    uk_forecast_results = list(uk_forecast.find({}, {'_id': 0}))  # Excludes the _id field
+    return jsonify(uk_forecast_results) 
+
+@app.route('/predictionf_uk_forecast')
+def f_uk_forecast():
+    db = mongo["Predictions"]
+    f_uk_forecast = db["f_uk_forecast"]
+    f_uk_forecast_results = list(f_uk_forecast.find({}, {'_id': 0}))  # Excludes the _id field
+    return jsonify(f_uk_forecast_results) 
+@app.route('/predictionus_forecast')
+def us_forecast():
+    db = mongo["Predictions"]
+    us_forecast = db["us_forecast"]
+    us_forecast_results = list(us_forecast.find({}, {'_id': 0}))  # Excludes the _id field
+    return jsonify(us_forecast_results) 
+@app.route('/predictionus_historic')
+def us_historic():
+    db = mongo["Predictions"]
+    us_historic = db["us_historic"]
+    us_historic_results = list(us_historic.find({}, {'_id': 0}))  # Excludes the _id field
+    return jsonify(us_historic_results) 
+
+@app.route('/predictionuk_historic')
+def uk_historic():
+    db = mongo["Predictions"]
+    uk_historic = db["uk_historic"]
+    uk_historic_results = list(uk_historic.find({}, {'_id': 0}))  # Excludes the _id field
+    return jsonify(uk_historic_results) 
+
+@app.route('/predictionargentina_historic')
+def argentina_historic():
+    db = mongo["Predictions"]
+    argentina_historic = db["argentina_historic"]
+    argentina_historic_results = list(argentina_historic.find({}, {'_id': 0}))  # Excludes the _id field
+    return jsonify(argentina_historic_results) 
+
+@app.route('/predictionsweden_historic')
+def sweden_historic():
+    db = mongo["Predictions"]
+    sweden_historic = db["sweden_historic"]
+    sweden_historic_results = list(sweden_historic.find({}, {'_id': 0}))  # Excludes the _id field
+    return jsonify(sweden_historic_results) 
+
+@app.route('/predictionchile_historic')
+def chile_historic():
+    db = mongo["Predictions"]
+    chile_historic = db["chile_historic"]
+    chile_historic_results = list(chile_historic.find({}, {'_id': 0}))  # Excludes the _id field
+    return jsonify(chile_historic_results) 
+
+@app.route('/predictionspain_historic')
+def spain_historic():
+    db = mongo["Predictions"]
+    spain_historic = db["spain_historic"]
+    spain_historic_results = list(spain_historic.find({}, {'_id': 0}))  # Excludes the _id field
+    return jsonify(spain_historic_results) 
+
+@app.route('/predictionf_us_forecast')
+def f_us_forecast():
+    db = mongo["Predictions"]
+    f_us_forecast = db["f_us_forecast"]
+    f_us_forecast_results = list(f_us_forecast.find({}, {'_id': 0}))  # Excludes the _id field
+    return jsonify(f_us_forecast_results)          
 # Define endpoint to render the HTML template
 @app.route('/')
 def welcome():
@@ -83,7 +211,8 @@ def Nadeath():
     db = mongo["Northamerica"]
     na_vase_death_data = db["case_death"]
     Na_case_death = list(na_vase_death_data.find({}, {'_id': 0}))
-    return jsonify(Na_case_death)  
+    return jsonify(Na_case_death)
+  
 @app.route('/Northamericamap')
 def Namap():
     db = mongo["Northamerica"]
@@ -108,12 +237,14 @@ def latmap():
     lat_map_data = db["latin_map"]
     Na_map = list(lat_map_data.find({}, {'_id': 0}))
     return (Na_map)
+
 @app.route('/Latindeath')
 def latdeath():
     db = mongo["Latin"]
     lat_death_data = db["latin_death"]
     lat_death = list(lat_death_data.find({}, {'_id': 0}))
     return jsonify(lat_death)
+
 @app.route('/Latincase')
 def latcase():
     db = mongo["Latin"]
@@ -139,6 +270,26 @@ def topten():
     top_ten = db["test2"]
     top_ten_data = list(top_ten.find({}, {'_id': 0}))
     return jsonify(top_ten_data)
+
+ 
+
+# @app.route('/prediction/<country>')
+# def prediction(country):
+#     with open(f'./static/data/{country}_forecast.pkl', 'rb') as f:
+            
+#         model= pickle.load(f)
+#     future_dates = pd.date_range(start='2021-01-01', periods=15, freq='YS')
+#     future_df = pd.DataFrame({'ds': future_dates})
+
+#     # Make predictions
+#     forecast = model.predict(future_df)
+
+#     # Convert forecast DataFrame to dictionary
+#     forecast_dict = forecast[['ds', 'yhat']].to_dict(orient='list')
+
+#     return jsonify(forecast_dict)
+      
+
 
 
 if __name__ == '__main__':
