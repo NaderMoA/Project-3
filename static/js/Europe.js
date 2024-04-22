@@ -91,6 +91,19 @@ legend.onAdd = function() {
 };
 legend.addTo(map);
 
+// map button js code//
+function activateButton(buttonId, otherButtonId, mapDataKey) {
+  document.getElementById(buttonId).classList.add('active');
+  document.getElementById(otherButtonId).classList.remove('active');
+  CountryMap(mapDataKey);
+}document.getElementById('male-btn').addEventListener('click', function() {
+  activateButton('male-btn', 'female-btn', 'EuropeMale');
+});document.getElementById('female-btn').addEventListener('click', function() {
+  activateButton('female-btn', 'male-btn', 'EuropeFemale');
+});
+
+
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // First Donut Chart
 
