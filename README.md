@@ -1,2 +1,1 @@
-# Project-3
-using https://gco.iarc.fr/en we're going to look into cancer rates across the globe and then we're going to break it down by global statistics and then by region and then further analyzing different cancer types and potential ethnicity, because the gco already have very visual and detailed reports we are also looking to how to further enhance visual aspects and manipulate data in unique ways that is not currently present
+
