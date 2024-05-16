@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
     const countrySelect = document.getElementById('countrySelect');
-    const predictionChartContainer = document.getElementById('predictionChart'); // Corrected variable name
+    const predictionChartContainer = document.getElementById('predictionChart');
     const historicChartContainer = document.getElementById('historicChart');
 
     // Function to fetch and display forecast chart data for the selected country
@@ -8,23 +8,43 @@ document.addEventListener('DOMContentLoaded', function() {
         // Construct the URLs for fetching data based on the selected country
         const maleUrl = `/prediction${country}_forecast`;
         const femaleUrl = `/predictionf_${country}_forecast`;
-
+    
         // Fetch data for male forecast
         fetch(maleUrl)
             .then(response => response.json())
             .then(maleData => {
-                const male_ds = maleData.map(item => new Date(item.ds).getFullYear());
-                const male_yhat = maleData.map(item => parseFloat(item.yhat).toFixed(2)); // Round to 2 decimal places
-
+                let male_ds = maleData.map(item => new Date(item.ds).getFullYear());
+                let male_yhat = maleData.map(item => parseFloat(item.yhat).toFixed(2)); // Round to 2 decimal places
+    
+                // Combine male_ds and male_yhat into an array of objects for sorting
+                let maleDataCombined = male_ds.map((year, index) => ({ year, value: male_yhat[index] }));
+    
+                // Sort the array based on the year
+                maleDataCombined.sort((a, b) => a.year - b.year);
+    
+                // Separate the sorted data back into male_ds and male_yhat arrays
+                male_ds = maleDataCombined.map(item => item.year);
+                male_yhat = maleDataCombined.map(item => item.value);
+    
                 // Fetch data for female forecast
                 fetch(femaleUrl)
                     .then(response => response.json())
                     .then(femaleData => {
-                        const female_ds = femaleData.map(item => new Date(item.ds).getFullYear());
-                        const female_yhat = femaleData.map(item => parseFloat(item.yhat).toFixed(2)); // Round to 2 decimal places
-
+                        let female_ds = femaleData.map(item => new Date(item.ds).getFullYear());
+                        let female_yhat = femaleData.map(item => parseFloat(item.yhat).toFixed(2)); // Round to 2 decimal places
+    
+                        // Combine female_ds and female_yhat into an array of objects for sorting
+                        let femaleDataCombined = female_ds.map((year, index) => ({ year, value: female_yhat[index] }));
+    
+                        // Sort the array based on the year
+                        femaleDataCombined.sort((a, b) => a.year - b.year);
+    
+                        // Separate the sorted data back into female_ds and female_yhat arrays
+                        female_ds = femaleDataCombined.map(item => item.year);
+                        female_yhat = femaleDataCombined.map(item => item.value);
+    
                         // Initialize Highcharts chart
-                        Highcharts.chart(predictionChartContainer, { // Use predictionChartContainer here
+                        Highcharts.chart(predictionChartContainer, {
                             chart: {
                                 type: 'line'
                             },
@@ -66,7 +86,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function displayHistoricChart(country) {
         // Construct the URL for fetching historic data based on the selected country
         const historicUrl = `/prediction${country}_historic`;
-    
+
         // Fetch historic data for the selected country
         fetch(historicUrl)
             .then(response => response.json())
@@ -76,7 +96,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     const year = new Date(row.Year, 0, 1).getTime(); // Convert year to milliseconds
                     return [year, parseFloat(row['age-standardized_death_rate_per_100k_male']), parseFloat(row['age-standardized_death_rate_per_100k_female'])];
                 });
-    
+
+                // Sort data by year
+                chartData.sort((a, b) => a[0] - b[0]);
+
                 // Draw the historic line chart using Highcharts
                 Highcharts.chart(historicChartContainer, {
                     chart: {
@@ -137,18 +160,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // Function to format country names with the first letter of each word capitalized
     function formatCountry(country) {
         return country.charAt(0).toUpperCase() + country.slice(1);
-    }
-    function formatCountry(country) {
-        // Check if the country is UK or US
-        if (country === 'uk' || country === 'us') {
-            // If it's UK or US, return the capitalized abbreviation
-            return country.toUpperCase();
-        } else {
-            // For other countries, capitalize only the first letter of each word
-            return country.replace(/\b\w/g, function(char) {
-                return char.toUpperCase();
-            });
-        }
     }
 });
 
